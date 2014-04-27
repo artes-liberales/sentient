@@ -63,8 +63,8 @@ void drawOrganisms() {
   
     //Check if it starves to death
     if (organism.fat <= 0) {
-      //organisms.remove(i);
-      //i--;
+      organisms.remove(i);
+      i--;
     }
   }
   
@@ -131,7 +131,7 @@ class Eye {
 class Organism {
   final float MAX_SIZE = 100;
   final float MAX_SPEED = 50;
-  final float DAMPING = 0.99;
+  final float DAMPING = 0.98;
   
   String name;
   
@@ -171,8 +171,8 @@ class Organism {
     angle = random(TWO_PI);
     flapLikelihood = random(0.005, 0.05);
     
-    mass = size/20;
-    size = random(MAX_SIZE / 4, MAX_SIZE);
+    mass = 1;
+    size = random(MAX_SIZE / 3, MAX_SIZE);
     fat = 10000;
     hungry = false;
     
@@ -206,20 +206,21 @@ class Organism {
     
     randomName();
   }
-  
+
   void randomName() {
     name = "KLAS";
   }
-  
+
   //Update size of body parts
   void updateBodyProportions() {
-      radius = size / 2;
-      //wingLength = radius * 0.2;
-      wingLength = radius * wingStrength * 2;
-      eyeSizeL = size / 6;
-      eyeSizeR = eyeSizeL;
+    mass = size * 0.05;
+    radius = size / 2;
+    //wingLength = radius * 0.2;
+    wingLength = radius * wingStrength * 2;
+    eyeSizeL = size / 6;
+    eyeSizeR = eyeSizeL;
   }
-  
+
   //Draw it
   void draw() {
     noStroke();
@@ -246,14 +247,14 @@ class Organism {
     //Left wing
     line(
       -radius, 0, //Wing starting point
-      -radius - wingLength - 10*cos(leftWingAngle) , // X for wing end point
-      10*sin(leftWingAngle)); // Y for wing end point
+      -radius - wingLength * cos(leftWingAngle) , // X for wing end point
+      wingLength * sin(leftWingAngle)); // Y for wing end point
     
     //Right wing
     line(
       radius, 0, //Wing starting point
-      radius + wingLength + 10*cos(rightWingAngle) , // X for wing end point
-      10*sin(rightWingAngle));
+      radius + wingLength * cos(rightWingAngle) , // X for wing end point
+      wingLength * sin(rightWingAngle));
     
     //Rotate back
     rotate(-HALF_PI);
@@ -269,7 +270,8 @@ class Organism {
     strokeWeight(size/50);
     stroke(0,100,100);
     fill(0,100,50);
-    ellipse(size/2.5,0,size/10, size/4);
+    //ellipse(size/2.5,0,size/10, size/4);
+    ellipse(size/2.5,0,size/30+velocity.mag()*2, size/10+velocity.mag()*3);
     
     popMatrix();
   }
@@ -285,11 +287,11 @@ class Organism {
   //Move body parts
   void moveBodyParts() {
     if (0 <= leftWingFlapping && random(1) < flapLikelihood) {
-      leftWingFlapping = (int) random(20, 40);
+      leftWingFlapping = (int) random(5, 60);
     }
     
     if (0 <= rightWingFlapping && random(1) < flapLikelihood) {
-      rightWingFlapping = (int) random(20, 40);
+      rightWingFlapping = (int) random(5,60);
     }
     
     if (0 < leftWingFlapping) {
@@ -315,31 +317,40 @@ class Organism {
     angularAcc = 0;
     wrapEdges();
     
-    float velMag = velocity.mag();
+    //float velMag = velocity.mag();
      // Convert polar to cartesian
-    velocity.x = velMag * cos(angle);
-    velocity.y = velMag * sin(angle);
+    //velocity.x = velMag * cos(angle);
+    //velocity.y = velMag * sin(angle);
   }
   
   //Flap left wing
   void flapLeftWing() {
       //leftWingAngle = sin(frameCount*size*0.01);
       leftWingAngle = sin(wingSinL*wingStrength*0.12);
-      applyAngularForce(0.0002);
+      float flapStrengthL = wingStrength*leftWingFlapping/40+leftWingAngle*0.05;
+      //applyAngularForce(0.0002);
+      applyAngularForce(flapStrengthL/50);
       PVector vector = PVector.fromAngle(angle);
-      vector.mult(0.01);
+      //vector.mult(0.01);
+      vector.mult(flapStrengthL);
       applyForce(vector);
       leftWingFlapping--;
+      wingSinL += leftWingFlapping;
   }
   
   //Flap right wing
   void flapRightWing() {
-    rightWingAngle = sin(frameCount*size*0.01);
-    applyAngularForce(-0.0002);
+    //rightWingAngle = sin(frameCount*size*0.01);
+    rightWingAngle = sin(wingSinR*wingStrength*0.12);
+    float flapStrengthR = wingStrength*rightWingFlapping/40+rightWingAngle*0.05;
+    //applyAngularForce(-0.0002);
+    applyAngularForce(-flapStrengthR/50);
     PVector vector = PVector.fromAngle(angle);
-    vector.mult(0.01);
+    //vector.mult(0.01);
+    vector.mult(flapStrengthR);
     applyForce(vector);
     rightWingFlapping--;
+    wingSinR += rightWingFlapping;
   }
   
   void applyForce(PVector force) {
@@ -348,7 +359,7 @@ class Organism {
   }
   
   void applyAngularForce(float af) {
-    angularAcc = af / mass;
+    angularAcc += af / mass;
   }
 
   //WRAP EDGES
@@ -364,17 +375,25 @@ class Organism {
     else if (location.y <= - radius + margin) location.y = height + radius - margin;// TO DOWN EDGE
   }//END WRAP EDGES
   
+  void displayData(String data) {
+    fill(0,0,100);
+    text(data, 0, 0);
+  }
+
   //Try to find something to eat
   boolean eat() {
     for (int i = 0; i < candies.size(); i++) {
-        Candy candy = (Candy)candies.get(i);
+      Candy candy = (Candy)candies.get(i);
+      
       if (dist(location.x, location.y, candy.location.x, candy.location.y) < radius) {
         fat += 10;
+        
         if (size < fat) {
           size += 10;
           divide();
           updateBodyProportions();
         }
+      
         candies.remove(i);
         return true;
       }
@@ -385,7 +404,7 @@ class Organism {
   
   //Burn fat
   void burnFat() {
-    fat -= size * 0.0000001;
+    fat -= size * 0.0001;
     
     if (fat < size / 5) {
       hungry = true;
@@ -397,7 +416,7 @@ class Organism {
   //Divide into two organisms
   void divide() {
     if (MAX_SIZE <= size) {
-      size = MAX_SIZE / 4;
+      size = MAX_SIZE / 3;
       fat = size;
       organisms.add(new Organism(this));
     }
