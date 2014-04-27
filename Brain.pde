@@ -36,3 +36,23 @@ class RandomFlapping implements Brain {
   }
 }
 
+class EmptyHead implements Brain {
+  //Constructor
+  EmptyHead() {
+  }
+  
+  //Copy constructor
+  EmptyHead(Brain original) {
+  }
+  
+  //Clone it
+  Brain clone() {
+    return new EmptyHead(this);
+  }
+  
+  float[] think(float[] inputSignal) {
+    float[] outputSignal = new float[2];
+    return outputSignal;
+  }
+}
+
