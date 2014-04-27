@@ -25,7 +25,6 @@ class Organism {
   float rightWingAngle;
   float leftWingFlapping = 0;
   float rightWingFlapping = 0;
-  float flapLikelihood;
   
   color baseColor;
   float eyeSizeL, eyeSizeR;
@@ -34,13 +33,14 @@ class Organism {
   float wingSinR,wingSinL;
   float targetGazeAngle; //or maybe Vector
   
+  Brain brain;
+  
   //Constructor
-  Organism() {
+  Organism(Brain brain) {
     location = new PVector(random(width), random(height));
     velocity = new PVector(0, 0);
     acceleration = new PVector(0, 0);
     angle = random(TWO_PI);
-    flapLikelihood = random(0.005, 0.05);
     
     mass = 1;
     size = random(MAX_SIZE / 3, MAX_SIZE);
@@ -54,6 +54,8 @@ class Organism {
     updateBodyProportions();
     
     randomName();
+    
+    this.brain = brain;
   }
   
   //Copy constructor
@@ -62,7 +64,6 @@ class Organism {
     velocity = new PVector(0, 0);
     acceleration = new PVector(0, 0);
     angle = random(TWO_PI);
-    flapLikelihood = random(0.005, 0.02);
     
     mass = 1;
     size = original.size;
@@ -76,6 +77,12 @@ class Organism {
     updateBodyProportions();
     
     randomName();
+    
+    brain = original.getBrain().clone();
+  }
+  
+  Brain getBrain() {
+    return brain;
   }
 
   void randomName() {
@@ -157,11 +164,14 @@ class Organism {
   
   //Move body parts
   void moveBodyParts() {
-    if (0 <= leftWingFlapping && random(1) < flapLikelihood) {
+    float[] inputSignal = new float[2];
+    float[] outputSignal = brain.think(inputSignal);
+    
+    if (0 <= leftWingFlapping && 1 == outputSignal[0]) {
       leftWingFlapping = (int) random(5, 60);
     }
     
-    if (0 <= rightWingFlapping && random(1) < flapLikelihood) {
+    if (0 <= rightWingFlapping && 1 == outputSignal[1]) {
       rightWingFlapping = (int) random(5,60);
     }
     
