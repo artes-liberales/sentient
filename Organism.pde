@@ -3,6 +3,8 @@ class Organism {
   final float MAX_SIZE = 100;
   final float MAX_SPEED = 50;
   final float DAMPING = 0.98;
+  final float VISION = 120;
+  final float VISION_ANGLE = PI / 4;
   
   String name;
   
@@ -164,7 +166,7 @@ class Organism {
   
   //Move body parts
   void moveBodyParts() {
-    float[] inputSignal = new float[2];
+    float[] inputSignal = lookFoorFood();
     float[] outputSignal = brain.think(inputSignal);
     
     if (0 <= leftWingFlapping && 1 == outputSignal[0]) {
@@ -172,7 +174,7 @@ class Organism {
     }
     
     if (0 <= rightWingFlapping && 1 == outputSignal[1]) {
-      rightWingFlapping = (int) random(5,60);
+      rightWingFlapping = (int) random(5, 60);
     }
     
     if (0 < leftWingFlapping) {
@@ -184,6 +186,48 @@ class Organism {
     }
   }
   
+  float[] lookFoorFood() {
+    float[] inputSignal = new float[2];
+    
+    for (int i = 0; i < candies.size(); i++) {
+      Candy candy = (Candy)candies.get(i);
+      
+      float candyX = candy.location.x;
+      float candyY = candy.location.y;
+      
+      if (width / 2 < location.x - candyX) {
+        candyX += width;
+      }
+      
+      if (width / 2 < candyX - location.x) {
+        candyX -= width;
+      }
+      
+      if (height / 2 < location.y - candyY) {
+        candyY += height;
+      }
+      
+      if (height / 2 < candyY - location.y) {
+        candyY -= height;
+      }
+      
+      if (dist(location.x, location.y, candyX, candyY) < VISION) {
+        float foodAngle = getAngle(location.x, location.y, candyX, candyY);
+        float angleToFood = foodAngle - angle;
+        
+        if (angleToFood < VISION_ANGLE) {
+          inputSignal[0] = 1;
+        }
+        
+        if (-angleToFood < VISION_ANGLE) {
+          inputSignal[1] = 1;
+        }
+      }
+    }
+    
+    return inputSignal;
+  }
+  
   //Update location, velocity, angle etc.
   void updatePosition() {
     velocity.add(acceleration);
@@ -191,6 +235,12 @@ class Organism {
     velocity.limit(MAX_SPEED);
     location.add(velocity);
     acceleration.mult(0);
+    
+    if (TWO_PI < angle) {
+      angle -= TWO_PI;
+    } else if (angle < 0) {
+      angle += TWO_PI;
+    }
     
     angularVel += angularAcc;
     angularVel *= DAMPING;
@@ -247,14 +297,18 @@ class Organism {
   void wrapEdges() {
     float margin = 0;
     // RIGHT EDGE
-    if (location.x >= width + radius - margin) location.x = - radius + margin;// TO LEFT EDGE
+    if (location.x >= width + radius - margin)
+      location.x = - radius + margin;// TO LEFT EDGE
     // DOWN EDGE
-    else if (location.y >= height + radius - margin) location.y = - radius + margin;// TO TOP EDGE
+    else if (location.y >= height + radius - margin)
+      location.y = - radius + margin;// TO TOP EDGE
     // LEFT EDGE
-    else if (location.x <= - radius + margin ) location.x = width  + radius - margin;// TO RIGHT EDGE
+    else if (location.x <= - radius + margin )
+      location.x = width  + radius - margin;// TO RIGHT EDGE
     // TOP EDGE
-    else if (location.y <= - radius + margin) location.y = height + radius - margin;// TO DOWN EDGE
-  }//END WRAP EDGES
+    else if (location.y <= - radius + margin)
+      location.y = height + radius - margin;// TO DOWN EDGE
+  }
   
   void displayData(String data) {
     fill(0,0,100);
@@ -324,5 +378,27 @@ class Eye {
   
   void draw() {
   }
+}
+
+
+
+public float getAngle(float x0, float y0, float x1, float y1) {
+    float angle;
+    
+    if (x1 - x0 < 0) {
+      angle = PI - (float) Math.atan2(x1 - x0, y1 - y0);
+    } else {
+      angle = (float) Math.atan2(x1 - x0, y1 - y0);
+    }
+    
+    angle = TWO_PI - angle;
+    
+    if (TWO_PI < angle) {
+      angle -= TWO_PI;
+    } else if (angle < 0) {
+      angle += TWO_PI;
+    }
+    
+    return angle;
 }
 

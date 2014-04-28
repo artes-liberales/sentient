@@ -3,6 +3,8 @@ interface Brain {
   abstract Brain clone();
 }
 
+
+
 class RandomFlapping implements Brain {
   float flapLikelihood;
   
@@ -36,6 +38,8 @@ class RandomFlapping implements Brain {
   }
 }
 
+
+
 class EmptyHead implements Brain {
   //Constructor
   EmptyHead() {
@@ -52,6 +56,39 @@ class EmptyHead implements Brain {
   
   float[] think(float[] inputSignal) {
     float[] outputSignal = new float[2];
+    return outputSignal;
+  }
+}
+
+
+
+class HomingIn implements Brain {
+  //Constructor
+  HomingIn() {
+    
+  }
+  
+  //Copy constructor
+  HomingIn(Brain original) {
+    
+  }
+  
+  //Clone it
+  Brain clone() {
+    return new HomingIn(this);
+  }
+  
+  float[] think(float[] inputSignal) {
+    float[] outputSignal = new float[2];
+    
+    if (1 == inputSignal[0]) {
+      outputSignal[1] = 1;
+    }
+    
+    if (1 == inputSignal[1]) {
+      outputSignal[0] = 1;
+    }
+    
     return outputSignal;
   }
 }

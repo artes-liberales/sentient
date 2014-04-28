@@ -37,10 +37,10 @@ void setup() {
   
   organisms = new ArrayList();
   for (int i = 0; i < INIT_ORGANISMS; i++) {
-    organisms.add(new Organism(new RandomFlapping()));
+    organisms.add(new Organism(new HomingIn()));
   }
   
-  sentient = new Organism(new EmptyHead());
+  sentient = new Organism(new HomingIn());
   
   candies = new ArrayList();
   for (int i = 0; i < INIT_CANDIES; i++) {
@@ -100,7 +100,7 @@ void drawCandy() {
 
 //Create random new candy
 void createCandy() {
-  if (candies.size() < MAX_CANDIES && random(1) < 0.05) {
+  if (candies.size() < MAX_CANDIES && random(1) < 0.02) {
     candies.add(new Candy());
   }
 }
