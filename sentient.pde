@@ -22,7 +22,8 @@ PFont dataFont;
 
 // === VISUAL SETUP ===
 void setup() {
-  size(displayWidth, displayHeight, JAVA2D);
+  //size(displayWidth, displayHeight, JAVA2D);
+  size(displayWidth, displayHeight, OPENGL);
   //size(600  , 600, JAVA2D);
   frameRate(60);
   smooth();
