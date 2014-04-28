@@ -10,7 +10,7 @@ ArrayList organisms;
 Organism sentient;
 ArrayList candies;
 
-PFont dataFont;
+//PFont dataFont;
 
 // sinus independent, add guassian, brain, evolution, vary behaviour, properties
 
@@ -23,10 +23,10 @@ PFont dataFont;
 // === VISUAL SETUP ===
 void setup() {
   //size(displayWidth, displayHeight, JAVA2D);
-  size(displayWidth, displayHeight, OPENGL);
-  //size(600  , 600, JAVA2D);
+  //size(displayWidth, displayHeight, OPENGL);
+  size(600  , 600, JAVA2D);
   frameRate(60);
-  smooth();
+  //smooth();
   colorMode(HSB, 360, 100, 100);
   background(198, 30, 100);
   //background(255);

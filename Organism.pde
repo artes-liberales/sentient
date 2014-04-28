@@ -213,6 +213,8 @@ class Organism {
       
       if (dist(location.x, location.y, candyX, candyY) < VISION) {
         float foodAngle = getAngle(location.x, location.y, candyX, candyY);
+        //float foodAngle = PVector.angleBetween(location, candy.location);
+
         float angleToFood = foodAngle - angle;
         
         if (angleToFood < VISION_ANGLE) {
