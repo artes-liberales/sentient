@@ -1,26 +1,50 @@
 interface Brain {
-  abstract float[] think(float[] inputSignal);
   abstract Brain clone();
+  abstract float[] think(float[] inputSignal);
 }
 
 
 
-class RandomFlapping implements Brain {
-  float flapLikelihood;
-  
+//Does nothing
+class AiEmptyHead implements Brain {
   //Constructor
-  RandomFlapping() {
-    flapLikelihood = random(0.005, 0.02);
+  AiEmptyHead() {
   }
   
   //Copy constructor
-  RandomFlapping(Brain original) {
-    flapLikelihood = ((RandomFlapping)original).flapLikelihood;
+  AiEmptyHead(Brain original) {
   }
   
   //Clone it
   Brain clone() {
-    return new RandomFlapping(this);
+    return new AiEmptyHead(this);
+  }
+  
+  float[] think(float[] inputSignal) {
+    float[] outputSignal = new float[2];
+    return outputSignal;
+  }
+}
+
+
+
+//Swims randomly
+class AiRandomFlapping implements Brain {
+  float flapLikelihood;
+  
+  //Constructor
+  AiRandomFlapping() {
+    flapLikelihood = random(0.005, 0.02);
+  }
+  
+  //Copy constructor
+  AiRandomFlapping(Brain original) {
+    flapLikelihood = ((AiRandomFlapping)original).flapLikelihood;
+  }
+  
+  //Clone it
+  Brain clone() {
+    return new AiRandomFlapping(this);
   }
   
   float[] think(float[] inputSignal) {
@@ -40,45 +64,69 @@ class RandomFlapping implements Brain {
 
 
 
-class EmptyHead implements Brain {
+//Swims towards food that is in field of vision
+class AiHomingIn implements Brain {
   //Constructor
-  EmptyHead() {
+  AiHomingIn() {
+    
   }
   
   //Copy constructor
-  EmptyHead(Brain original) {
+  AiHomingIn(Brain original) {
+    
   }
   
   //Clone it
   Brain clone() {
-    return new EmptyHead(this);
+    return new AiHomingIn(this);
   }
   
   float[] think(float[] inputSignal) {
     float[] outputSignal = new float[2];
+    
+    if (1 == inputSignal[0]) {
+      outputSignal[1] = 1;
+    }
+    
+    if (1 == inputSignal[1]) {
+      outputSignal[0] = 1;
+    }
+    
     return outputSignal;
   }
 }
 
 
 
-class HomingIn implements Brain {
+//If there is no food in sight, swim randomly
+class AiSeeker implements Brain {
+  Brain reptileBrain;
+  
   //Constructor
-  HomingIn() {
-    
+  AiSeeker() {
+    reptileBrain = new AiRandomFlapping();
   }
   
   //Copy constructor
-  HomingIn(Brain original) {
-    
+  AiSeeker(Brain original) {
+    reptileBrain = ((AiSeeker)original).getReptileBrain().clone();
   }
   
   //Clone it
   Brain clone() {
-    return new HomingIn(this);
+    return new AiSeeker(this);
+  }
+  
+  Brain getReptileBrain() {
+    return reptileBrain;
   }
   
   float[] think(float[] inputSignal) {
+    if (0 == inputSignal[0] && 0 == inputSignal[1]) {
+      return reptileBrain.think(inputSignal);
+    }
+    
+    
     float[] outputSignal = new float[2];
     
     if (1 == inputSignal[0]) {
