@@ -1,10 +1,34 @@
 interface Brain {
-  abstract float[] think(float[] inputSignal);
   abstract Brain clone();
+  abstract float[] think(float[] inputSignal);
 }
 
 
 
+//Does nothing
+class AiEmptyHead implements Brain {
+  //Constructor
+  AiEmptyHead() {
+  }
+  
+  //Copy constructor
+  AiEmptyHead(Brain original) {
+  }
+  
+  //Clone it
+  Brain clone() {
+    return new AiEmptyHead(this);
+  }
+  
+  float[] think(float[] inputSignal) {
+    float[] outputSignal = new float[2];
+    return outputSignal;
+  }
+}
+
+
+
+//Swims randomly
 class AiRandomFlapping implements Brain {
   float flapLikelihood;
   
@@ -40,28 +64,7 @@ class AiRandomFlapping implements Brain {
 
 
 
-class AiEmptyHead implements Brain {
-  //Constructor
-  AiEmptyHead() {
-  }
-  
-  //Copy constructor
-  AiEmptyHead(Brain original) {
-  }
-  
-  //Clone it
-  Brain clone() {
-    return new AiEmptyHead(this);
-  }
-  
-  float[] think(float[] inputSignal) {
-    float[] outputSignal = new float[2];
-    return outputSignal;
-  }
-}
-
-
-
+//Swims towards food that is in field of vision
 class AiHomingIn implements Brain {
   //Constructor
   AiHomingIn() {
@@ -79,6 +82,51 @@ class AiHomingIn implements Brain {
   }
   
   float[] think(float[] inputSignal) {
+    float[] outputSignal = new float[2];
+    
+    if (1 == inputSignal[0]) {
+      outputSignal[1] = 1;
+    }
+    
+    if (1 == inputSignal[1]) {
+      outputSignal[0] = 1;
+    }
+    
+    return outputSignal;
+  }
+}
+
+
+
+//If there is no food in sight, swim randomly
+class AiSeeker implements Brain {
+  Brain reptileBrain;
+  
+  //Constructor
+  AiSeeker() {
+    reptileBrain = new AiRandomFlapping();
+  }
+  
+  //Copy constructor
+  AiSeeker(Brain original) {
+    reptileBrain = ((AiSeeker)original).getReptileBrain().clone();
+  }
+  
+  //Clone it
+  Brain clone() {
+    return new AiSeeker(this);
+  }
+  
+  Brain getReptileBrain() {
+    return reptileBrain;
+  }
+  
+  float[] think(float[] inputSignal) {
+    if (0 == inputSignal[0] && 0 == inputSignal[1]) {
+      return reptileBrain.think(inputSignal);
+    }
+    
+    
     float[] outputSignal = new float[2];
     
     if (1 == inputSignal[0]) {
