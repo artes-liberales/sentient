@@ -5,22 +5,22 @@ interface Brain {
 
 
 
-class RandomFlapping implements Brain {
+class AiRandomFlapping implements Brain {
   float flapLikelihood;
   
   //Constructor
-  RandomFlapping() {
+  AiRandomFlapping() {
     flapLikelihood = random(0.005, 0.02);
   }
   
   //Copy constructor
-  RandomFlapping(Brain original) {
-    flapLikelihood = ((RandomFlapping)original).flapLikelihood;
+  AiRandomFlapping(Brain original) {
+    flapLikelihood = ((AiRandomFlapping)original).flapLikelihood;
   }
   
   //Clone it
   Brain clone() {
-    return new RandomFlapping(this);
+    return new AiRandomFlapping(this);
   }
   
   float[] think(float[] inputSignal) {
@@ -40,18 +40,18 @@ class RandomFlapping implements Brain {
 
 
 
-class EmptyHead implements Brain {
+class AiEmptyHead implements Brain {
   //Constructor
-  EmptyHead() {
+  AiEmptyHead() {
   }
   
   //Copy constructor
-  EmptyHead(Brain original) {
+  AiEmptyHead(Brain original) {
   }
   
   //Clone it
   Brain clone() {
-    return new EmptyHead(this);
+    return new AiEmptyHead(this);
   }
   
   float[] think(float[] inputSignal) {
@@ -62,20 +62,20 @@ class EmptyHead implements Brain {
 
 
 
-class HomingIn implements Brain {
+class AiHomingIn implements Brain {
   //Constructor
-  HomingIn() {
+  AiHomingIn() {
     
   }
   
   //Copy constructor
-  HomingIn(Brain original) {
+  AiHomingIn(Brain original) {
     
   }
   
   //Clone it
   Brain clone() {
-    return new HomingIn(this);
+    return new AiHomingIn(this);
   }
   
   float[] think(float[] inputSignal) {

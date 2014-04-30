@@ -37,10 +37,10 @@ void setup() {
   
   organisms = new ArrayList();
   for (int i = 0; i < INIT_ORGANISMS; i++) {
-    organisms.add(new Organism(new HomingIn()));
+    organisms.add(new Organism(new AiHomingIn()));
   }
   
-  sentient = new Organism(new HomingIn());
+  sentient = new Organism(new AiHomingIn());
   
   candies = new ArrayList();
   for (int i = 0; i < INIT_CANDIES; i++) {
