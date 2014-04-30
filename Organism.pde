@@ -4,7 +4,7 @@ class Organism {
   final float MAX_SPEED = 50;
   final float DAMPING = 0.98;
   final float VISION = 120;
-  final float VISION_ANGLE = PI / 4;
+  final float EYE_ANGLE = PI / 8;
   
   String name;
   
@@ -189,6 +189,12 @@ class Organism {
   float[] lookFoorFood() {
     float[] inputSignal = new float[2];
     
+    float leftEyeAngle = angle - EYE_ANGLE;
+    float rightEyeAngle = angle + EYE_ANGLE;
+    
+    PVector leftEyeFocus = new PVector(VISION * cos(leftEyeAngle), VISION * sin(leftEyeAngle));
+    PVector rightEyeFocus = new PVector(VISION * cos(rightEyeAngle), VISION * sin(rightEyeAngle));
+    
     for (int i = 0; i < candies.size(); i++) {
       Candy candy = (Candy)candies.get(i);
       
@@ -197,29 +203,29 @@ class Organism {
       
       if (width / 2 < location.x - candyX) {
         candyX += width;
-      }
-      
-      if (width / 2 < candyX - location.x) {
+      } else if (width / 2 < candyX - location.x) {
         candyX -= width;
       }
       
       if (height / 2 < location.y - candyY) {
         candyY += height;
-      }
-      
-      if (height / 2 < candyY - location.y) {
+      } else if (height / 2 < candyY - location.y) {
         candyY -= height;
       }
       
       if (dist(location.x, location.y, candyX, candyY) < VISION) {
-        float foodAngle = getAngle(location.x, location.y, candyX, candyY);
-        float angleToFood = foodAngle - angle;
+        PVector foodVector = new PVector(candyX - location.x, candyY - location.y);
         
-        if (angleToFood < VISION_ANGLE) {
+        float leftTheta = (float) Math.acos(leftEyeFocus.dot(foodVector)
+            / (leftEyeFocus.mag() * foodVector.mag()));
+        float rightTheta = (float) Math.acos(rightEyeFocus.dot(foodVector)
+            / (rightEyeFocus.mag() * foodVector.mag()));
+        
+        if (Math.abs(leftTheta) < EYE_ANGLE) {
           inputSignal[0] = 1;
         }
         
-        if (-angleToFood < VISION_ANGLE) {
+        if (Math.abs(rightTheta) < EYE_ANGLE) {
           inputSignal[1] = 1;
         }
       }
@@ -378,27 +384,5 @@ class Eye {
   
   void draw() {
   }
-}
-
-
-
-public float getAngle(float x0, float y0, float x1, float y1) {
-    float angle;
-    
-    if (x1 - x0 < 0) {
-      angle = PI - (float) Math.atan2(x1 - x0, y1 - y0);
-    } else {
-      angle = (float) Math.atan2(x1 - x0, y1 - y0);
-    }
-    
-    angle = TWO_PI - angle;
-    
-    if (TWO_PI < angle) {
-      angle -= TWO_PI;
-    } else if (angle < 0) {
-      angle += TWO_PI;
-    }
-    
-    return angle;
 }
 
