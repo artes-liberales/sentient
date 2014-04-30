@@ -95,7 +95,6 @@ class Organism {
   void updateBodyProportions() {
     mass = size * 0.05;
     radius = size / 2;
-    //wingLength = radius * 0.2;
     wingLength = radius * wingStrength * 2;
     eyeSizeL = size / 6;
     eyeSizeR = eyeSizeL;
@@ -186,21 +185,28 @@ class Organism {
     }
   }
   
+  //See if there is food in front of the organism
+  //inputSignal[0] == 1 means that there is food to the left
+  //inputSignal[1] == 1 means that there is food to the right
+  //There can be food both to the left and to the right
   float[] lookFoorFood() {
+    //Signal that is to be sent as input to the brain
     float[] inputSignal = new float[2];
-    
+
+    //The angles that the eyes are looking in    
     float leftEyeAngle = angle - EYE_ANGLE;
     float rightEyeAngle = angle + EYE_ANGLE;
     
-    PVector leftEyeFocus = new PVector(VISION * cos(leftEyeAngle), VISION * sin(leftEyeAngle));
-    PVector rightEyeFocus = new PVector(VISION * cos(rightEyeAngle), VISION * sin(rightEyeAngle));
+    //Directions that the eyes are looking in   
+    PVector leftEyeLookingDirection = new PVector(VISION * cos(leftEyeAngle), VISION * sin(leftEyeAngle));
+    PVector rightEyeLookingDirection = new PVector(VISION * cos(rightEyeAngle), VISION * sin(rightEyeAngle));
     
     for (int i = 0; i < candies.size(); i++) {
       Candy candy = (Candy)candies.get(i);
-      
       float candyX = candy.location.x;
       float candyY = candy.location.y;
       
+      //Consider wrapping of screen edges
       if (width / 2 < location.x - candyX) {
         candyX += width;
       } else if (width / 2 < candyX - location.x) {
@@ -213,19 +219,20 @@ class Organism {
         candyY -= height;
       }
       
+      //Check if food is in field of vision
       if (dist(location.x, location.y, candyX, candyY) < VISION) {
-        PVector foodVector = new PVector(candyX - location.x, candyY - location.y);
+        PVector foodDirection = new PVector(candyX - location.x, candyY - location.y);
         
-        float leftTheta = (float) Math.acos(leftEyeFocus.dot(foodVector)
-            / (leftEyeFocus.mag() * foodVector.mag()));
-        float rightTheta = (float) Math.acos(rightEyeFocus.dot(foodVector)
-            / (rightEyeFocus.mag() * foodVector.mag()));
+        //Angles between eye looking directions and food direction
+        float leftTheta = (float) Math.acos(leftEyeLookingDirection.dot(foodDirection)
+            / (leftEyeLookingDirection.mag() * foodDirection.mag()));
+        float rightTheta = (float) Math.acos(rightEyeLookingDirection.dot(foodDirection)
+            / (rightEyeLookingDirection.mag() * foodDirection.mag()));
         
+        //Determine if food is in left or right field of vision
         if (Math.abs(leftTheta) < EYE_ANGLE) {
           inputSignal[0] = 1;
-        }
-        
-        if (Math.abs(rightTheta) < EYE_ANGLE) {
+        } else if (Math.abs(rightTheta) < EYE_ANGLE) {
           inputSignal[1] = 1;
         }
       }
@@ -242,6 +249,7 @@ class Organism {
     location.add(velocity);
     acceleration.mult(0);
     
+    //Rewind angle so that it is between 0 and 2 * PI
     if (TWO_PI < angle) {
       angle -= TWO_PI;
     } else if (angle < 0) {
@@ -253,22 +261,14 @@ class Organism {
     angle += angularVel;
     angularAcc = 0;
     wrapEdges();
-    
-    //float velMag = velocity.mag();
-     // Convert polar to cartesian
-    //velocity.x = velMag * cos(angle);
-    //velocity.y = velMag * sin(angle);
   }
   
   //Flap left wing
   void flapLeftWing() {
-      //leftWingAngle = sin(frameCount*size*0.01);
-      leftWingAngle = sin(wingSinL*wingStrength*0.12);
-      float flapStrengthL = wingStrength*leftWingFlapping/40+leftWingAngle*0.05;
-      //applyAngularForce(0.0002);
-      applyAngularForce(flapStrengthL/50);
+      leftWingAngle = sin(wingSinL * wingStrength * 0.12);
+      float flapStrengthL = wingStrength * leftWingFlapping / 40 + leftWingAngle * 0.05;
+      applyAngularForce(flapStrengthL / 50);
       PVector vector = PVector.fromAngle(angle);
-      //vector.mult(0.01);
       vector.mult(flapStrengthL);
       applyForce(vector);
       leftWingFlapping--;
@@ -277,13 +277,10 @@ class Organism {
   
   //Flap right wing
   void flapRightWing() {
-    //rightWingAngle = sin(frameCount*size*0.01);
-    rightWingAngle = sin(wingSinR*wingStrength*0.12);
-    float flapStrengthR = wingStrength*rightWingFlapping/40+rightWingAngle*0.05;
-    //applyAngularForce(-0.0002);
-    applyAngularForce(-flapStrengthR/50);
+    rightWingAngle = sin(wingSinR * wingStrength * 0.12);
+    float flapStrengthR = wingStrength * rightWingFlapping / 40 + rightWingAngle * 0.05;
+    applyAngularForce(-flapStrengthR / 50);
     PVector vector = PVector.fromAngle(angle);
-    //vector.mult(0.01);
     vector.mult(flapStrengthR);
     applyForce(vector);
     rightWingFlapping--;
@@ -303,17 +300,21 @@ class Organism {
   void wrapEdges() {
     float margin = 0;
     // RIGHT EDGE
-    if (location.x >= width + radius - margin)
+    if (location.x >= width + radius - margin) {
       location.x = - radius + margin;// TO LEFT EDGE
+    }
     // DOWN EDGE
-    else if (location.y >= height + radius - margin)
+    else if (location.y >= height + radius - margin) {
       location.y = - radius + margin;// TO TOP EDGE
+    }
     // LEFT EDGE
-    else if (location.x <= - radius + margin )
+    else if (location.x <= - radius + margin) {
       location.x = width  + radius - margin;// TO RIGHT EDGE
+    }
     // TOP EDGE
-    else if (location.y <= - radius + margin)
+    else if (location.y <= - radius + margin) {
       location.y = height + radius - margin;// TO DOWN EDGE
+    }
   }
   
   void displayData(String data) {
@@ -321,7 +322,7 @@ class Organism {
     text(data, 0, 0);
   }
 
-  //Try to find something to eat
+  //Eat food that is inside body radius
   boolean eat() {
     for (int i = 0; i < candies.size(); i++) {
       Candy candy = (Candy)candies.get(i);
@@ -329,6 +330,7 @@ class Organism {
       if (dist(location.x, location.y, candy.location.x, candy.location.y) < radius) {
         fat += 10;
         
+        //Grow and divide
         if (size < fat) {
           size += 10;
           divide();
