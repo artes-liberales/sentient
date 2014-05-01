@@ -28,7 +28,7 @@ class Candy {
     
     translate(location.x, location.y);
     rotate(angle);
-    ellipse(0, 0, size, size);
+    ellipse(0, 0, size, size/2);
     
     popMatrix();
   }
