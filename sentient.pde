@@ -38,7 +38,7 @@ void setup() {
   
   organisms = new ArrayList();
   for (int i = 0; i < INIT_ORGANISMS; i++) {
-    organisms.add(new Organism(new AiHomingIn()));
+    organisms.add(new Organism(new AiSeeker()));
   }
   
   sentient = new Organism(new AiSeeker());
