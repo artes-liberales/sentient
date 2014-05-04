@@ -5,11 +5,12 @@ class Network {
 
   Network() {
     neurons = new ArrayList<Neuron>();
- 
+    
     //Create neurons
     Neuron input0 = new InputNeuron();
     Neuron input1 = new InputNeuron();
     Neuron bias = new BiasNeuron(1);
+    Neuron hungerSensor = new InputNeuron();
     Neuron output0 = new OutputNeuron();
     Neuron output1 = new OutputNeuron();
 
@@ -20,11 +21,14 @@ class Network {
     connect(input1, output1);
     connect(bias, output0);
     connect(bias, output1);
+    connect(hungerSensor, output0);
+    connect(hungerSensor, output1);
  
     //Add the neurons to the network
     addNeuron(input0);
     addNeuron(input1);
     addNeuron(bias);
+    addNeuron(hungerSensor);
     addNeuron(output0);
     addNeuron(output1);
   }
@@ -37,12 +41,13 @@ class Network {
     Neuron input0 = new InputNeuron();
     Neuron input1 = new InputNeuron();
     Neuron bias = new BiasNeuron(1);
+    Neuron hungerSensor = new InputNeuron();
     Neuron output0 = new OutputNeuron();
     Neuron output1 = new OutputNeuron();
     
     //Get connection weights
-    float weights[][] = new float[3][2];
-    for (int i = 0; i < 3; i++) {
+    float weights[][] = new float[4][2];
+    for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 2; j++) {
         //Check for mutation
         if (random(1) < MUTATION_RATE) {
@@ -67,11 +72,16 @@ class Network {
     bias.addConnection(c);
     c = new Connection(output1, weights[2][1]);
     bias.addConnection(c);
+    c = new Connection(output0, weights[3][0]);
+    hungerSensor.addConnection(c);
+    c = new Connection(output1, weights[3][1]);
+    hungerSensor.addConnection(c);
  
     //Add the neurons to the network
     addNeuron(input0);
     addNeuron(input1);
     addNeuron(bias);
+    addNeuron(hungerSensor);
     addNeuron(output0);
     addNeuron(output1);
   }
@@ -94,10 +104,11 @@ class Network {
     neurons.get(0).feedForward(inputSignal[0]);
     neurons.get(1).feedForward(inputSignal[1]);
     neurons.get(2).feedForward(0);
+    neurons.get(3).feedForward(inputSignal[2]);
     
     float[] outputSignal = new float[2];
-    outputSignal[0] = neurons.get(3).collectSum();
-    outputSignal[1] = neurons.get(4).collectSum();
+    outputSignal[0] = neurons.get(4).collectSum();
+    outputSignal[1] = neurons.get(5).collectSum();
     return outputSignal;
   }
 }
