@@ -5,8 +5,8 @@ class Network {
     neurons = new ArrayList<Neuron>();
  
     //Create neurons
-    Neuron input0 = new Neuron();
-    Neuron input1 = new Neuron();
+    Neuron input0 = new InputNeuron();
+    Neuron input1 = new InputNeuron();
     Neuron bias = new BiasNeuron(1);
     Neuron output0 = new OutputNeuron();
     Neuron output1 = new OutputNeuron();
@@ -32,7 +32,7 @@ class Network {
   }
 
   void connect(Neuron a, Neuron b) {
-    Connection c = new Connection(a, b, random(1));
+    Connection c = new Connection(b, random(1));
     a.addConnection(c);
   }
 
@@ -42,8 +42,8 @@ class Network {
     neurons.get(2).feedForward(0);
     
     float[] outputSignal = new float[2];
-    outputSignal[0] = neurons.get(3).sum;
-    outputSignal[1] = neurons.get(4).sum;
+    outputSignal[0] = neurons.get(3).collectSum();
+    outputSignal[1] = neurons.get(4).collectSum();
     return outputSignal;
   }
 }

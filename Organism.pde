@@ -168,11 +168,11 @@ class Organism {
     float[] inputSignal = lookFoorFood();
     float[] outputSignal = brain.think(inputSignal);
     
-    if (0 <= leftWingFlapping && 1 == outputSignal[0]) {
+    if (0 <= leftWingFlapping && 1 <= outputSignal[0]) {
       leftWingFlapping = (int) random(5, 60);
     }
     
-    if (0 <= rightWingFlapping && 1 == outputSignal[1]) {
+    if (0 <= rightWingFlapping && 1 <= outputSignal[1]) {
       rightWingFlapping = (int) random(5, 60);
     }
     

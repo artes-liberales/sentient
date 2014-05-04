@@ -1,11 +1,13 @@
-class Neuron {
+abstract class Neuron {
   ArrayList<Connection> connections;
-  int sum = 0;
-
+  int sum;
+  
+  //Constructor
   Neuron() {
     connections = new ArrayList<Connection>();
+    sum = 0;
   }
-
+  
   void addConnection(Connection c) {
     connections.add(c);
   }
@@ -24,22 +26,37 @@ class Neuron {
   //Send the sum out through all connections
   void fire() {
     for (Connection c : connections) {
-      c.feedforward(sum);
+      c.feedForward(sum);
     }
+  }
+
+  //Get the output
+  float collectSum() {
+    float temp = sum;
+    sum = 0;
+    return temp;
+  }
+}
+
+
+
+class InputNeuron extends Neuron {
+  //Constructor
+  InputNeuron() {
+    super();
   }
 }
 
 
 
 class BiasNeuron extends Neuron {
-  int sum;
-
+  //Constructor
   BiasNeuron(int sum) {
     super();
     this.sum = sum;
   }
   
-  void feedforward(float input) {
+  void feedForward(float input) {
     fire();
   }
 }
@@ -47,16 +64,20 @@ class BiasNeuron extends Neuron {
 
 
 class OutputNeuron extends Neuron {
-  int sum;
-
+  //Constructor
   OutputNeuron() {
     super();
-    this.sum = 0;
+  }
+  
+  @Override
+  void feedForward(float input) {
+    sum += input;
   }
   
   //Dont do anything,
   //just wait for someone to collect value of sum
-  void feedforward(float input) {
+  @Override
+  void fire() {
   }
 }
 
