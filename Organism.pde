@@ -16,6 +16,7 @@ class Organism {
   float angularAcc;
   
   float fat;
+  float hunger;
   boolean hungry;
   
   float mass = 1;
@@ -47,6 +48,7 @@ class Organism {
     mass = 1;
     size = random(MAX_SIZE / 3, MAX_SIZE);
     fat = 10000;
+    hunger = 0;
     hungry = false;
     
     baseColor = color(random(360), map(wingStrength,0.08,0.2, 40, 70), 95);
@@ -61,7 +63,7 @@ class Organism {
   }
   
   //Copy constructor
-  Organism(Organism original) {
+  private Organism(Organism original) {
     location = new PVector(original.location.x, original.location.y);
     velocity = new PVector(0, 0);
     acceleration = new PVector(0, 0);
@@ -168,11 +170,11 @@ class Organism {
     float[] inputSignal = lookFoorFood();
     float[] outputSignal = brain.think(inputSignal);
     
-    if (0 <= leftWingFlapping && 1 == outputSignal[0]) {
+    if (0 <= leftWingFlapping && 1 <= outputSignal[0]) {
       leftWingFlapping = (int) random(5, 60);
     }
     
-    if (0 <= rightWingFlapping && 1 == outputSignal[1]) {
+    if (0 <= rightWingFlapping && 1 <= outputSignal[1]) {
       rightWingFlapping = (int) random(5, 60);
     }
     
@@ -191,7 +193,7 @@ class Organism {
   //There can be food both to the left and to the right
   float[] lookFoorFood() {
     //Signal that is to be sent as input to the brain
-    float[] inputSignal = new float[2];
+    float[] inputSignal = new float[3];
 
     //The angles that the eyes are looking in    
     float leftEyeAngle = angle - EYE_ANGLE;
@@ -237,6 +239,8 @@ class Organism {
         }
       }
     }
+    
+    inputSignal[2] = hunger;
     
     return inputSignal;
   }
@@ -347,7 +351,7 @@ class Organism {
   
   //Burn fat
   void burnFat() {
-    fat -= size * 0.0001;
+    fat -= size * 0.0002;
     
     if (0 < leftWingFlapping) {
       fat -= size * 0.0001;
@@ -356,6 +360,8 @@ class Organism {
     if (0 < rightWingFlapping) {
       fat -= size * 0.0001;
     }
+    
+    hunger = 1 - fat / size;
     
     if (fat < size / 5) {
       hungry = true;
