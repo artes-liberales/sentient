@@ -349,6 +349,14 @@ class Organism {
   void burnFat() {
     fat -= size * 0.0001;
     
+    if (0 < leftWingFlapping) {
+      fat -= size * 0.0001;
+    }
+    
+    if (0 < rightWingFlapping) {
+      fat -= size * 0.0001;
+    }
+    
     if (fat < size / 5) {
       hungry = true;
     } else {
