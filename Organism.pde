@@ -61,7 +61,7 @@ class Organism {
   }
   
   //Copy constructor
-  Organism(Organism original) {
+  private Organism(Organism original) {
     location = new PVector(original.location.x, original.location.y);
     velocity = new PVector(0, 0);
     acceleration = new PVector(0, 0);

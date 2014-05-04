@@ -12,7 +12,7 @@ class AiEmptyHead implements Brain {
   }
   
   //Copy constructor
-  AiEmptyHead(Brain original) {
+  private AiEmptyHead(Brain original) {
   }
   
   //Clone it
@@ -38,7 +38,7 @@ class AiRandomFlapping implements Brain {
   }
   
   //Copy constructor
-  AiRandomFlapping(Brain original) {
+  private AiRandomFlapping(Brain original) {
     flapLikelihood = ((AiRandomFlapping)original).flapLikelihood;
   }
   
@@ -72,7 +72,7 @@ class AiHomingIn implements Brain {
   }
   
   //Copy constructor
-  AiHomingIn(Brain original) {
+  private AiHomingIn(Brain original) {
     
   }
   
@@ -108,7 +108,7 @@ class AiSeeker implements Brain {
   }
   
   //Copy constructor
-  AiSeeker(Brain original) {
+  private AiSeeker(Brain original) {
     reptileBrain = ((AiSeeker)original).getReptileBrain().clone();
   }
   
