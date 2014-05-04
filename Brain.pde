@@ -141,3 +141,28 @@ class AiSeeker implements Brain {
   }
 }
 
+
+
+class AiNetwork implements Brain {
+  Network network;
+
+  //Constructor
+  AiNetwork() {
+    network = new Network();
+  }
+
+  //Copy constructor
+  private AiNetwork(AiNetwork original) {
+    network = original.network;
+  }
+
+  //Clone it
+  Brain clone() {
+    return new AiNetwork(this);
+  }
+
+  float[] think(float[] inputSignal) {
+    return network.fire(inputSignal);
+  }
+}
+

@@ -38,10 +38,10 @@ void setup() {
   
   organisms = new ArrayList();
   for (int i = 0; i < INIT_ORGANISMS; i++) {
-    organisms.add(new Organism(new AiSeeker()));
+    organisms.add(new Organism(new AiNetwork()));
   }
   
-  sentient = new Organism(new AiSeeker());
+  sentient = new Organism(new AiNetwork());
   
   candies = new ArrayList();
   for (int i = 0; i < INIT_CANDIES; i++) {
