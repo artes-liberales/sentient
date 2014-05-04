@@ -1,4 +1,6 @@
 class Network {
+  final float MUTATION_RATE = 0.01;
+  
   ArrayList<Neuron> neurons;
 
   Network() {
@@ -37,19 +39,33 @@ class Network {
     Neuron bias = new BiasNeuron(1);
     Neuron output0 = new OutputNeuron();
     Neuron output1 = new OutputNeuron();
-
+    
+    //Get connection weights
+    float weights[][] = new float[3][2];
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 2; j++) {
+        //Check for mutation
+        if (random(1) < MUTATION_RATE) {
+          weights[i][j] = random(1);
+        } else {
+          weights[i][j] = original.neurons.get(i).connections.get(j).weight;
+        }
+      }
+    }
+    
     //Make connections between the neurons
-    Connection c = new Connection(output0, original.neurons.get(0).connections.get(0).weight);
+    Connection c;
+    c = new Connection(output0, weights[0][0]);
     input0.addConnection(c);
-    c = new Connection(output1, original.neurons.get(0).connections.get(1).weight);
+    c = new Connection(output1, weights[0][1]);
     input0.addConnection(c);
-    c = new Connection(output0, original.neurons.get(1).connections.get(0).weight);
+    c = new Connection(output0, weights[1][0]);
     input1.addConnection(c);
-    c = new Connection(output1, original.neurons.get(1).connections.get(1).weight);
+    c = new Connection(output1, weights[1][1]);
     input1.addConnection(c);
-    c = new Connection(output0, original.neurons.get(2).connections.get(0).weight);
+    c = new Connection(output0, weights[2][0]);
     bias.addConnection(c);
-    c = new Connection(output1, original.neurons.get(2).connections.get(1).weight);
+    c = new Connection(output1, weights[2][1]);
     bias.addConnection(c);
  
     //Add the neurons to the network
