@@ -5,6 +5,7 @@ Random javaRandom;
 final int INIT_ORGANISMS = 30;
 final int INIT_CANDIES = 20;
 final int MAX_CANDIES = 100;
+final float CANDY_REFILL_RATE = 0.03;
 
 ArrayList organisms;
 Organism sentient;
@@ -101,7 +102,7 @@ void drawCandy() {
 
 //Create random new candy
 void createCandy() {
-  if (candies.size() < MAX_CANDIES && random(1) < 0.02) {
+  if (candies.size() < MAX_CANDIES && random(1) < CANDY_REFILL_RATE) {
     candies.add(new Candy());
   }
 }

@@ -347,7 +347,7 @@ class Organism {
   
   //Burn fat
   void burnFat() {
-    fat -= size * 0.0005;
+    fat -= size * 0.0003;
     
     if (0 < leftWingFlapping) {
       //fat -= size * 0.0001;
