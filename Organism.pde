@@ -347,14 +347,14 @@ class Organism {
   
   //Burn fat
   void burnFat() {
-    fat -= size * 0.0001;
+    fat -= size * 0.0005;
     
     if (0 < leftWingFlapping) {
-      fat -= size * 0.0001;
+      //fat -= size * 0.0001;
     }
     
     if (0 < rightWingFlapping) {
-      fat -= size * 0.0001;
+      //fat -= size * 0.0001;
     }
     
     if (fat < size / 5) {

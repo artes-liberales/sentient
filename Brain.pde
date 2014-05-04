@@ -153,7 +153,7 @@ class AiNetwork implements Brain {
 
   //Copy constructor
   private AiNetwork(AiNetwork original) {
-    network = original.network;
+    network = original.network.clone();
   }
 
   //Clone it

@@ -32,9 +32,13 @@ abstract class Neuron {
 
   //Get the output
   float collectSum() {
-    float temp = sum;
-    sum = 0;
-    return temp;
+    if (1 < sum) {
+      float temp = sum;
+      sum = 0;
+      return temp;
+    }
+    
+    return 0;
   }
 }
 
