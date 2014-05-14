@@ -4,7 +4,8 @@ class Organism {
   final float MAX_SPEED = 50;
   final float DAMPING = 0.98;
   final float VISION = 120;
-  final float EYE_ANGLE = PI / 8;
+  //final float EYE_ANGLE = PI / 8;
+  final float EYE_ANGLE = PI / 2;
   
   String name;
   
@@ -112,12 +113,18 @@ class Organism {
       c = #FF0000;
     }
     
-    fill(c);
+    
     pushMatrix();
     translate(location.x, location.y);
     rotate(angle);
     
+    //Vision
+    fill(255,0,100,50);
+    //ellipse(0, 0, size+VISION, size+VISION);
+    arc(0, 0, size+VISION, size+VISION, -EYE_ANGLE, EYE_ANGLE, PIE);
+   
     //Body
+    fill(c);
     ellipse(0, 0, size, size);
     
     //Wings
