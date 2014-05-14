@@ -20,6 +20,7 @@ PFont dataFont;
 // miner
 // kollision detection then opengl supported drawing 
 // fix timestep & tweak anmation values
+// visualize brain & signals
 
 // === VISUAL SETUP ===
 void setup() {
