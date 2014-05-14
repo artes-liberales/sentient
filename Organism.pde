@@ -231,6 +231,7 @@ class Organism {
       }
       
       //Check if food is in field of vision
+       baseColor = #000000;
       if (dist(location.x, location.y, candyX, candyY) < VISION) {
         PVector foodDirection = new PVector(candyX - location.x, candyY - location.y);
         
@@ -241,10 +242,13 @@ class Organism {
             / (rightEyeLookingDirection.mag() * foodDirection.mag()));
         
         //Determine if food is in left or right field of vision
+        
         if (Math.abs(leftTheta) < EYE_ANGLE) {
           inputSignal[0] = 1;
+          baseColor = #00FF00;
         } else if (Math.abs(rightTheta) < EYE_ANGLE) {
           inputSignal[1] = 1;
+          baseColor = #0000FF;
         }
       }
     }
