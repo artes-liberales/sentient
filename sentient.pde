@@ -31,7 +31,6 @@ void setup() {
   //smooth();
   colorMode(HSB, 360, 100, 100);
   background(198, 30, 100);
-  //background(255);
   ellipseMode(CENTER);
   dataFont = loadFont("LetterGothicMTStd-Bold-10.vlw");
   textAlign(CENTER, CENTER);
