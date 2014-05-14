@@ -11,29 +11,30 @@ ArrayList organisms;
 Organism sentient;
 ArrayList candies;
 
-//PFont dataFont;
+PFont dataFont;
 
-// sinus independent, add guassian, brain, evolution, vary behaviour, properties
-
+// add guassian 
+// evolution, vary behaviour, properties
 // Ecosystem of people ansikten som komponenet
-// styr en
-//ögon som rör sig
+// ögon som rör sig
 // miner
-//kollision detection
+// kollision detection then opengl supported drawing 
+// fix timestep & tweak anmation values
 
 // === VISUAL SETUP ===
 void setup() {
   //size(displayWidth, displayHeight, JAVA2D);
   //size(displayWidth, displayHeight, OPENGL);
   size(600  , 600, JAVA2D);
+  //size(600  , 600, OPENGL);
   frameRate(60);
   //smooth();
   colorMode(HSB, 360, 100, 100);
   background(198, 30, 100);
   //background(255);
   ellipseMode(CENTER);
+  dataFont = loadFont("LetterGothicMTStd-Bold-10.vlw");
   textAlign(CENTER, CENTER);
-  //dataFont = loadFont("LetterGothicMTStd-Bold-10.vlw");
   
   javaRandom = new Random();
   
