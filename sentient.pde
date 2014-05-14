@@ -2,7 +2,7 @@
 import java.util.Random;
 Random javaRandom;
 
-final int INIT_ORGANISMS = 30;
+final int INIT_ORGANISMS = 2;
 final int INIT_CANDIES = 20;
 final int MAX_CANDIES = 100;
 final float CANDY_REFILL_RATE = 0.03;
