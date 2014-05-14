@@ -179,10 +179,12 @@ class Organism {
     
     if (0 <= leftWingFlapping && 1 <= outputSignal[0]) {
       leftWingFlapping = (int) random(5, 60);
+      leftWingFlapping = 30;
     }
     
     if (0 <= rightWingFlapping && 1 <= outputSignal[1]) {
       rightWingFlapping = (int) random(5, 60);
+      rightWingFlapping = 30;
     }
     
     if (0 < leftWingFlapping) {
