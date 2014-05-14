@@ -35,7 +35,6 @@ class Organism {
   
   float wingStrength;
   float wingSinR,wingSinL;
-  float targetGazeAngle; //or maybe Vector
   
   Brain brain;
   
@@ -166,17 +165,20 @@ class Organism {
   
   //Update it
   void update() {
+    percieve();
     moveBodyParts();
     updatePosition();
     eat();
     burnFat();
   }
-  
+  void percieve() {
+
+  }
   //Move body parts
-  void moveBodyParts() {
+  void moveBodyParts() {    
+    // Percieve, could theese be ivars instead?
     float[] inputSignal = lookFoorFood();
     float[] outputSignal = brain.think(inputSignal);
-    
     if (0 <= leftWingFlapping && 1 <= outputSignal[0]) {
       leftWingFlapping = (int) random(5, 60);
       leftWingFlapping = 30;
@@ -231,7 +233,7 @@ class Organism {
       }
       
       //Check if food is in field of vision
-       baseColor = #000000;
+      
       if (dist(location.x, location.y, candyX, candyY) < VISION) {
         PVector foodDirection = new PVector(candyX - location.x, candyY - location.y);
         
@@ -245,10 +247,8 @@ class Organism {
         
         if (Math.abs(leftTheta) < EYE_ANGLE) {
           inputSignal[0] = 1;
-          baseColor = #00FF00;
         } else if (Math.abs(rightTheta) < EYE_ANGLE) {
           inputSignal[1] = 1;
-          baseColor = #0000FF;
         }
       }
     }
@@ -393,13 +393,30 @@ class Organism {
   }
 }
 
-
+class Face {
+ Eye leftEye;
+ Eye rightEye;
+ Mouth mouth;
+ Face() {}
+ void update() {}
+ void draw() {}
+ 
+}
 
 class Eye {
   PVector location;
+  float radius;
+  
   float irisSize;
+  float inherentPupilSize;
   float pupilSize;
-  float gazeAngle;//or vector
+  PVector gaze;
+  float inherentVisionLength; 
+  float inherentVisionBreadth; // an angle 
+  float visionLength; //could get modified by gaze
+  float visionBreadth; 
+  
+  PVector targetGazeAngle; //or maybe Vector
   
   Eye(PVector loc) {
     location = loc;
@@ -408,10 +425,22 @@ class Eye {
   void update() {
   }
   
-  void update(float targetGazeAngle) {
-  }
-  
   void draw() {
   }
+  void drawVisionAreas(){}
+  void randomGaze(){}
+  void fixGaze(){}
+  void lerpGaze(){}
 }
 
+class Mouth {
+  
+}
+
+class Wing {
+
+}
+
+class BrainVisual {
+
+}

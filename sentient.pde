@@ -8,7 +8,7 @@ final int MAX_CANDIES = 100;
 final float CANDY_REFILL_RATE = 0.03;
 
 ArrayList organisms;
-Organism sentient;
+//Organism sentient;
 ArrayList candies;
 
 PFont dataFont;
@@ -35,16 +35,12 @@ void setup() {
   ellipseMode(CENTER);
   dataFont = loadFont("LetterGothicMTStd-Bold-10.vlw");
   textAlign(CENTER, CENTER);
-  
   javaRandom = new Random();
-  
   organisms = new ArrayList();
   for (int i = 0; i < INIT_ORGANISMS; i++) {
     organisms.add(new Organism(new AiNetwork()));
   }
-  
-  sentient = new Organism(new AiNetwork());
-  
+  //sentient = new Organism(new AiNetwork());
   candies = new ArrayList();
   for (int i = 0; i < INIT_CANDIES; i++) {
     candies.add(new Candy());
@@ -57,6 +53,7 @@ void draw() {
   drawOrganisms();
   drawCandy();
   createCandy();
+  //drawSentient();
 }
 
 //Update and draw organisms
@@ -72,8 +69,26 @@ void drawOrganisms() {
       i--;
     }
   }
-  
-  //add support for multiple keystorkes
+}
+
+//Draw candy
+void drawCandy() {
+  for (int i = 0; i < candies.size(); i++) {
+    Candy candy = (Candy)candies.get(i);
+    candy.draw();
+  }
+}
+
+//Create random new candy
+void createCandy() {
+  if (candies.size() < MAX_CANDIES && random(1) < CANDY_REFILL_RATE) {
+    candies.add(new Candy());
+  }
+}
+
+/*
+void drawSentient() {
+//add support for multiple keystorkes
   if (keyPressed) {
     if (key == 'z') {
       sentient.leftWingFlapping = 10;
@@ -92,21 +107,7 @@ void drawOrganisms() {
   sentient.update();
   sentient.draw();
 }
-
-//Draw candy
-void drawCandy() {
-  for (int i = 0; i < candies.size(); i++) {
-    Candy candy = (Candy)candies.get(i);
-    candy.draw();
-  }
-}
-
-//Create random new candy
-void createCandy() {
-  if (candies.size() < MAX_CANDIES && random(1) < CANDY_REFILL_RATE) {
-    candies.add(new Candy());
-  }
-}
+*/
 
 float gaussianCalculator(float mean, float standardDeviation) {
   float g = (float) javaRandom.nextGaussian();
