@@ -2,7 +2,7 @@
 import java.util.Random;
 Random javaRandom;
 
-final int INIT_ORGANISMS = 10;
+final int INIT_ORGANISMS = 5;
 final int INIT_CANDIES = 20;
 final int MAX_CANDIES = 100;
 final float CANDY_REFILL_RATE = 0.03;
@@ -27,12 +27,12 @@ PFont dataFont;
 // collision detection and working vision
 // bump into each other and start looking at each other while going away!
 // if see another keep distance
-
+int oncePerFrame;
 // === VISUAL SETUP ===
 void setup() {
   //size(displayWidth, displayHeight, JAVA2D);
   //size(displayWidth, displayHeight, OPENGL);
-  size(600  , 600, JAVA2D);
+  size(800  , 800, JAVA2D);
   //size(600  , 600, OPENGL);
   frameRate(60);
   //smooth();
@@ -45,6 +45,8 @@ void setup() {
   organisms = new ArrayList();
   for (int i = 0; i < INIT_ORGANISMS; i++) {
     organisms.add(new Organism(new AiNetwork()));
+    organisms.add(new Organism(new AiRandomFlapping()));
+    
   }
   //sentient = new Organism(new AiNetwork());
   candies = new ArrayList();
@@ -55,10 +57,11 @@ void setup() {
 
 //Main loop
 void draw() {
-  background(198, 30, 100);
-  drawOrganisms();
+  background(198, 50, 100);
+  oncePerFrame = frameCount;
   drawCandy();
   createCandy();
+  drawOrganisms();
   //drawSentient();
 }
 

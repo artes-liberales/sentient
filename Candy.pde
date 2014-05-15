@@ -1,22 +1,11 @@
 //Something to eat
-class Candy {
-  final float CANDY_SIZE = 20;
-  
-  PVector location;
-  float angle;
-  
-  float mass = 1;
-  float size;
-  float radius;
-  
+class Candy extends Thing{
+  float CANDY_SIZE = 20;
   color baseColor;
-  
   //Constructor
   Candy() {
-    location = new PVector(random(width), random(height));
-    angle = random(TWO_PI);
-    size = CANDY_SIZE;
     
+    size = CANDY_SIZE;
     baseColor = color(random(360), 60, 95);
   }
   
@@ -29,6 +18,14 @@ class Candy {
     translate(location.x, location.y);
     rotate(angle);
     ellipse(0, 0, size, size/2);
+    
+    if(spotted) {
+      strokeWeight(1);
+    stroke(#FF0000);
+    noFill();
+    ellipse(0, 0, size*2, size*2);
+    spotted = false;
+  }
     
     popMatrix();
   }
