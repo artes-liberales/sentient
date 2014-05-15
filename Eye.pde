@@ -42,7 +42,7 @@ class Eye {
   }
 
   void update() {
-    if( 0.001 > random(1) && gazeLerp >= 1) randomGaze();
+    if( 0.01 > random(1) && gazeLerp >= 1) randomGaze();
     if (gazeLerp < 1) lerpGaze();
     //if( 0.01 > random(1) && dilationLerp >= 1) randomDilation();
     if (dilationLerp < 1) lerpDilation();
@@ -66,17 +66,14 @@ class Eye {
     //Iris
     pushMatrix();
     translate(location.x+gaze.x*eyeSize/6, location.y+gaze.y*eyeSize/6);
-    drawVisionArea();
+    //drawVisionArea();
     noStroke();
     fill(irisColor);
     ellipse(0, 0, irisSize, irisSize); 
     //Pupil
     fill(pupilColor);
     ellipse(0, 0, pupilSize, pupilSize); 
-
-
     popMatrix();
-    strokeWeight(100);
   }
   void calculateVisionScope() {
     float eyeAngle = gaze.heading();
@@ -105,7 +102,7 @@ class Eye {
       line(locationT.x+location.x, locationT.y+location.x, x, y);
       pupilColor = #000000;
       if (abs(angleToThing) < visionBreadthA  ) {
-        pupilColor = #FF0000;
+        //pupilColor = #FF0000;
 
         println(bodyAngle);
         return thingDirection;
@@ -119,10 +116,10 @@ class Eye {
     //float eyeAngle = gaze.heading();
     //float eyeZ = gaze.mag();
     //float[] visionArea = getVisionScope();
-    //fill(255, 0, 100, dilation*100);
-    strokeWeight(0.5);
-    noFill();
-    stroke(255, 0, 100);
+    fill(255, 0, 100, dilation*100);
+    //strokeWeight(0.5);
+    //noFill();
+    //stroke(255, 0, 100);
     //arc(0, 0, size+visionLength*eyeZ, size+visionLength*eyeZ, eyeAngle-visionBreadth/2, eyeAngle+visionBreadth/2, PIE);
     arc(0, 0, visionScope, visionScope, visionStartAngle, visionStopAngle, PIE);
   }

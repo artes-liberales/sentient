@@ -4,7 +4,6 @@ class Candy extends Thing{
   color baseColor;
   //Constructor
   Candy() {
-    
     size = CANDY_SIZE;
     baseColor = color(random(360), 60, 95);
   }
@@ -21,7 +20,7 @@ class Candy extends Thing{
     
     if(spotted) {
       strokeWeight(1);
-    stroke(#FF0000);
+    stroke(#ff0000);
     noFill();
     ellipse(0, 0, size*2, size*2);
     spotted = false;

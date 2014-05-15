@@ -12,6 +12,7 @@ class Face {
     location = new PVector(l.x, l.y);
     leftEye = new Eye();//make gaussian
     rightEye = new Eye();
+    mouth = new Mouth();
     color irisColor = color(random(120, 250), 40, 100);
     leftEye.irisColor = irisColor;
     rightEye.irisColor = irisColor;
@@ -31,6 +32,7 @@ class Face {
     float eyeY = size/4;
     leftEye.updateProportions( eyeSize, eyeX, eyeY );
     rightEye.updateProportions( eyeSize, eyeX, -eyeY );
+    mouth.updateProportions(size);
   }
   void draw() {
 

@@ -2,7 +2,7 @@
 import java.util.Random;
 Random javaRandom;
 
-final int INIT_ORGANISMS = 5;
+final int INIT_ORGANISMS = 10;
 final int INIT_CANDIES = 20;
 final int MAX_CANDIES = 100;
 final float CANDY_REFILL_RATE = 0.03;
@@ -33,7 +33,7 @@ void setup() {
   //size(displayWidth, displayHeight, JAVA2D);
   //size(displayWidth, displayHeight, OPENGL);
   size(800  , 800, JAVA2D);
-  //size(600  , 600, OPENGL);
+  //size(600, 600, OPENGL);
   frameRate(60);
   //smooth();
   colorMode(HSB, 360, 100, 100);
@@ -45,8 +45,7 @@ void setup() {
   organisms = new ArrayList();
   for (int i = 0; i < INIT_ORGANISMS; i++) {
     organisms.add(new Organism(new AiNetwork()));
-    organisms.add(new Organism(new AiRandomFlapping()));
-    
+    //organisms.add(new Organism(new AiRandomFlapping()));
   }
   //sentient = new Organism(new AiNetwork());
   candies = new ArrayList();
@@ -57,7 +56,7 @@ void setup() {
 
 //Main loop
 void draw() {
-  background(198, 50, 100);
+  background(198, 30, 100);
   oncePerFrame = frameCount;
   drawCandy();
   createCandy();
@@ -71,7 +70,7 @@ void drawOrganisms() {
     Organism organism = (Organism) organisms.get(i);
     organism.update();
     organism.draw();
-  
+
     //Check if it starves to death
     if (organism.fat <= 0) {
       organisms.remove(i);
@@ -97,26 +96,26 @@ void createCandy() {
 
 /*
 void drawSentient() {
-//add support for multiple keystorkes
-  if (keyPressed) {
-    if (key == 'z') {
-      sentient.leftWingFlapping = 10;
-    }
-    
-    if (key == 'x') {
-      sentient.rightWingFlapping = 10;
-    }
-    
-    if (key == 's') {
-      sentient.leftWingFlapping = 10;
-      sentient.rightWingFlapping = 10;
-    }
-  }
-  
-  sentient.update();
-  sentient.draw();
-}
-*/
+ //add support for multiple keystorkes
+ if (keyPressed) {
+ if (key == 'z') {
+ sentient.leftWingFlapping = 10;
+ }
+ 
+ if (key == 'x') {
+ sentient.rightWingFlapping = 10;
+ }
+ 
+ if (key == 's') {
+ sentient.leftWingFlapping = 10;
+ sentient.rightWingFlapping = 10;
+ }
+ }
+ 
+ sentient.update();
+ sentient.draw();
+ }
+ */
 
 float gaussianCalculator(float mean, float standardDeviation) {
   float g = (float) javaRandom.nextGaussian();
