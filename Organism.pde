@@ -30,7 +30,7 @@ class Organism {
   float leftWingFlapping = 0;
   float rightWingFlapping = 0;
 
-  color baseColor;
+  color skinColor;
   float eyeSizeL, eyeSizeR;
 
   float wingStrength;
@@ -38,7 +38,7 @@ class Organism {
 
   Brain brain;
   
-  Eye oneEye;
+  Face face;
   
   //Constructor
   Organism(Brain brain) {
@@ -48,21 +48,21 @@ class Organism {
     angle = random(TWO_PI);
 
     mass = 1;
-    size = random(MAX_SIZE / 3, MAX_SIZE);
+    size = random(MAX_SIZE / 2, MAX_SIZE);
     fat = 10000;
     hunger = 0;
     hungry = false;
 
-    baseColor = color(random(360), map(wingStrength, 0.08, 0.2, 40, 70), 95);
+    skinColor = color(random(360), map(wingStrength, 0.08, 0.2, 40, 70), 95);
 
     wingStrength = random(0.08, 0.2);
 
-    updateBodyProportions();
+    face = new Face(size);
     
-    oneEye = new Eye( PVector.random2D() );
     randomName();
-
+  
     this.brain = brain;
+    updateBodyProportions();
   }
 
   //Copy constructor
@@ -77,15 +77,15 @@ class Organism {
     fat = size;
     hungry = false;
 
-    baseColor = original.baseColor;
+    skinColor = original.skinColor;
 
     wingStrength = original.wingStrength;
 
-    updateBodyProportions();
-
+    face = new Face(size);
     randomName();
 
     brain = original.getBrain().clone();
+    updateBodyProportions();
   }
 
   Brain getBrain() {
@@ -103,12 +103,14 @@ class Organism {
     wingLength = radius * wingStrength * 2;
     eyeSizeL = size / 6;
     eyeSizeR = eyeSizeL;
+    face.updateProportions(size);
+    
   }
 
   //Draw it
   void draw() {
     noStroke();
-    color c = baseColor;
+    color c = skinColor;
 
     //Another color if hungry
     if (hungry) {
@@ -121,9 +123,9 @@ class Organism {
     rotate(angle);
 
     //Vision
-    fill(255, 0, 100, 50);
+    //fill(255, 0, 100, 50);
     //ellipse(0, 0, size+VISION, size+VISION);
-    arc(0, 0, size+VISION, size+VISION, -EYE_ANGLE, EYE_ANGLE, PIE);
+    //arc(0, 0, size+VISION, size+VISION, -EYE_ANGLE, EYE_ANGLE, PIE);
 
     //Body
     fill(c);
@@ -132,29 +134,31 @@ class Organism {
     //Wings
     stroke(c);
     strokeWeight(size/4);
-    rotate(HALF_PI);
+    //rotate(HALF_PI);
 
     //Left wing
     line(
-    -radius, 0, //Wing starting point
-    -radius - wingLength * cos(leftWingAngle), // X for wing end point
-    wingLength * sin(leftWingAngle)); // Y for wing end point
+    0, -radius, //Wing starting point    
+    wingLength * sin(leftWingAngle ),// Y for wing end point
+    -radius - wingLength * cos(leftWingAngle ) // X for wing end point
+    ); 
 
     //Right wing
     line(
-    radius, 0, //Wing starting point
-    radius + wingLength * cos(rightWingAngle), // X for wing end point
-    wingLength * sin(rightWingAngle));
+    0, radius, //Wing starting point
+    wingLength * sin(rightWingAngle),
+    radius + wingLength * cos(rightWingAngle) // X for wing end point
+    );
 
     //Rotate back
-    rotate(-HALF_PI);
+    //rotate(-HALF_PI);
 
     //White of the eye
-    fill(0, 0, 0);
-    strokeWeight(size/15);
-    stroke(0, 0, 100);
-    ellipse(size/4, -size/4, eyeSizeL, eyeSizeL);
-    ellipse(size/4, size/4, eyeSizeR, eyeSizeR);
+    //fill(0, 0, 0);
+    //strokeWeight(size/15);
+    //stroke(0, 0, 100);
+    //ellipse(size/4, -size/4, eyeSizeL, eyeSizeL);
+    //ellipse(size/4, size/4, eyeSizeR, eyeSizeR);
 
     //Mouth
     strokeWeight(size/50);
@@ -163,20 +167,24 @@ class Organism {
     //ellipse(size/2.5,0,size/10, size/4);
     ellipse(size/2.5, 0, size/30, size/10);
     
-    oneEye.draw();
-    
+    face.draw();
     popMatrix();
+    
   }
 
   //Update it
   void update() {
+    face.update();
     percieve();
     moveBodyParts();
     updatePosition();
     //eat();
     burnFat();
+    
   }
   void percieve() {
+    float[] inputSignal = face.percieve();
+    //float[] outputSignal = brain.think(inputSignal);
   }
   //Move body parts
   void moveBodyParts() {    
@@ -427,56 +435,163 @@ class Face {
   Eye leftEye;
   Eye rightEye;
   Mouth mouth;
-  Face() {
-    leftEye = new Eye( new PVector(size/4,size/4));//make gaussian
+  Face(float s) {
+    size = s;
+    leftEye = new Eye();//make gaussian
+    rightEye = new Eye();
+    color irisColor = color(random(120,250), 40, 100);
+    leftEye.irisColor = irisColor;
+    rightEye.irisColor = irisColor;
   }
   void update() {
+    if( 0.01 > random(1) && leftEye.gazeLerp >= 1) randomGaze();
+    if( 0.01 > random(1) && leftEye.dilationLerp >= 1) randomDilation();
+    leftEye.update();
+    rightEye.update();
+  }
+  void updateProportions(float s) {
+  size = s;
+  float eyeSize = size / 3.5;
+  float eyeX = size/4;
+  float eyeY = size/4;
+  leftEye.updateProportions( eyeSize,eyeX,eyeY );
+  rightEye.updateProportions( eyeSize,eyeX,-eyeY );
   }
   void draw() {
+    leftEye.draw();
+    rightEye.draw();
+  }
+  void randomGaze() {
+    PVector targetGaze = PVector.random2D();
+    float gazeLerpSpeed = random(0.01, 0.00001);
+    float gazeLerp = 0;
+    leftEye.targetGaze = targetGaze;
+    leftEye.gazeLerpSpeed = gazeLerpSpeed;
+    leftEye.gazeLerp = gazeLerp;
+    rightEye.targetGaze = targetGaze;
+    rightEye.gazeLerpSpeed = gazeLerpSpeed;
+    rightEye.gazeLerp = gazeLerp;
+  }
+  void randomDilation() {
+  float targetDilation = random(0.3,0.7);
+  float dilationLerp = 0;
+  float dilationLerpSpeed = random(0.01, 0.00001);
+  leftEye.targetDilation = targetDilation;
+  leftEye.dilationLerp = dilationLerp;
+  leftEye.dilationLerpSpeed = dilationLerpSpeed;
+  rightEye.targetDilation = targetDilation;
+  rightEye.dilationLerp = dilationLerp;
+  rightEye.dilationLerpSpeed = dilationLerpSpeed;
+  }
+  float[] percieve() {
+  return  null;
   }
 }
 
 class Eye {
   PVector location;
-  float sizeE;
-
+  float size;
   float irisSize;
   float inherentPupilSize;
   float pupilSize;
+  float dilation;
+  float targetDilation;
+  float dilationLerp;
+  float dilationLerpSpeed;
   PVector gaze;
   float inherentVisionLength; 
   float inherentVisionBreadth; // an angle 
   float visionLength; //could get modified by gaze
   float visionBreadth; 
-
-  PVector targetGazeAngle; //or maybe Vector
-
-  Eye(PVector loc) {
-    location = new PVector(loc.x,loc.y);
-    sizeE = 10;
+  PVector targetGaze; //or maybe Vector
+  color irisColor;
+  color whiteColor;
+  color pupilColor;
+  float gazeLerp;
+  float gazeLerpSpeed;
+   
+  
+  Eye() {
+    location = new PVector(0,0);
+    gaze = new PVector(0,0.5);
+    whiteColor = color(0,0,100);
+    pupilColor = color(0,0,20);
+    dilation = 0.6;
+    //update();
+    gazeLerp = 1;
+    dilationLerp = 1;
+    targetGaze = gaze;
+    
   }
 
   void update() {
+    //if( 0.01 > random(1) && gazeLerp >= 1) randomGaze();
+    if(gazeLerp < 1) lerpGaze();
+    //if( 0.01 > random(1) && dilationLerp >= 1) randomDilation();
+    if(dilationLerp < 1) lerpDilation();
   }
-
+  void updateProportions(float s, float x, float y) {
+    size = s;
+    location.x = x;
+    location.y = y;
+    irisSize = size / 1.3;
+    pupilSize = irisSize*dilation;
+    visionLength = size*10;
+    visionBreadth = HALF_PI;
+  }
+  
   void draw() {
-
-    //White of the eye
-    fill(0, 0, 100);
     noStroke();
-    ellipse(location.x,location.y,sizeE ,sizeE);
     
+    //White of the eye
+    fill(whiteColor);
+    ellipse(location.x,location.y,size ,size);  
+    //Iris
+    pushMatrix();
+    translate(location.x+gaze.x*size/6,location.y+gaze.y*size/6);
+    drawVisionArea();
+    noStroke();
+    fill(irisColor);
+    ellipse(0,0,irisSize ,irisSize); 
     //Pupil
-    
+    fill(pupilColor);
+    ellipse(0,0, pupilSize , pupilSize); 
+    popMatrix();
   }
-
-  void drawVisionAreas() {
+  float[] getVisionArea() {
+  return null;
+  }
+  void drawVisionArea() {
+    float eyeAngle = gaze.heading();
+    float eyeZ = gaze.mag();
+    //fill(255, 0, 100, dilation*100);
+    strokeWeight(0.5);
+    noFill();
+    stroke(255, 0, 100);
+    arc(0, 0, size+visionLength*eyeZ, size+visionLength*eyeZ, eyeAngle-visionBreadth/2, eyeAngle+visionBreadth/2, PIE);
   }
   void randomGaze() {
+    targetGaze = PVector.random2D();
+    gazeLerpSpeed = random(0.01, 0.001);
+    gazeLerp = 0;
   }
+  
   void fixGaze() {
   }
   void lerpGaze() {
+    gaze.lerp(targetGaze, gazeLerp);
+    gazeLerp += gazeLerpSpeed;
+    
+  }
+  void randomDilation() {
+  targetDilation = random(0.3,0.7);
+  dilationLerp = 0;
+  dilationLerpSpeed = random(0.01, 0.001);
+  }
+  void lerpDilation() {
+  dilation = lerp(dilation, targetDilation, dilationLerp);
+  dilationLerp += dilationLerpSpeed;
+  pupilSize = irisSize*dilation;
   }
 }
 
@@ -484,6 +599,7 @@ class Mouth {
 }
 
 class Wing {
+  
 }
 
 class BrainVisual {

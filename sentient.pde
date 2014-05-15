@@ -2,7 +2,7 @@
 import java.util.Random;
 Random javaRandom;
 
-final int INIT_ORGANISMS = 2;
+final int INIT_ORGANISMS = 10;
 final int INIT_CANDIES = 20;
 final int MAX_CANDIES = 100;
 final float CANDY_REFILL_RATE = 0.03;
@@ -21,6 +21,12 @@ PFont dataFont;
 // kollision detection then opengl supported drawing 
 // fix timestep & tweak anmation values
 // visualize brain & signals
+// eating some things needs time to stop and mouth animation
+// if large enough you can become carnivore
+// check distandce between every object against every other object save it and check bounderies
+// collision detection and working vision
+// bump into each other and start looking at each other while going away!
+// if see another keep distance
 
 // === VISUAL SETUP ===
 void setup() {
