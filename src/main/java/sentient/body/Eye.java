@@ -2,7 +2,7 @@ package sentient.body;
 
 import processing.core.PVector;
 import sentient.Sentient;
-import sentient.Util;
+import sentient.RandomGenerator;
 
 public class Eye {
     public PVector location;
@@ -118,7 +118,7 @@ public class Eye {
     
     public void randomGaze() {
         targetGaze = PVector.random2D();
-        gazeLerpSpeed = Util.getRandomInterval(0.001f, 0.01f);
+        gazeLerpSpeed = RandomGenerator.getRandomInterval(0.001f, 0.01f);
         gazeLerp = 0;
     }
     
@@ -131,9 +131,9 @@ public class Eye {
     }
     
     public void randomDilation() {
-        targetDilation = Util.getRandomInterval(0.3f, 0.7f);
+        targetDilation = RandomGenerator.getRandomInterval(0.3f, 0.7f);
         dilationLerp = 0;
-        dilationLerpSpeed = Util.getRandomInterval(0.001f, 0.01f);
+        dilationLerpSpeed = RandomGenerator.getRandomInterval(0.001f, 0.01f);
     }
     
     public void lerpDilation() {

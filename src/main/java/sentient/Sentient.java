@@ -64,7 +64,7 @@ public class Sentient extends PApplet {
         for (int i = 0; i < INIT_ORGANISMS; i++) {
             float wingStrength = random(0.08f, 0.2f);
             int skinColor = color(random(360), Sentient.getMap(wingStrength, 0.08f, 0.2f, 40f, 70f), 95);
-            int irisColor = color((int)Util.getRandomInterval(120, 250), 40, 100);
+            int irisColor = color((int)RandomGenerator.getRandomInterval(120, 250), 40, 100);
             Organism org = new Organism(new AiNetwork(), wingStrength, skinColor, irisColor);
             organisms.add(org);
             // organisms.add(new Organism(new AiRandomFlapping()));

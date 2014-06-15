@@ -2,7 +2,7 @@ package sentient.body;
 
 import processing.core.PVector;
 import sentient.Thing;
-import sentient.Util;
+import sentient.RandomGenerator;
 
 public class Face {
     public float size;
@@ -49,7 +49,7 @@ public class Face {
     
     public void randomGaze() {
       PVector targetGaze = PVector.random2D();
-      float gazeLerpSpeed = Util.getRandomInterval(0.00001f, 0.01f);
+      float gazeLerpSpeed = RandomGenerator.getRandomInterval(0.00001f, 0.01f);
       float gazeLerp = 0;
       leftEye.targetGaze = targetGaze;
       leftEye.gazeLerpSpeed = gazeLerpSpeed;
@@ -60,9 +60,9 @@ public class Face {
     }
     
     public void randomDilation() {
-      float targetDilation = Util.getRandomInterval(0.3f, 0.7f);
+      float targetDilation = RandomGenerator.getRandomInterval(0.3f, 0.7f);
       float dilationLerp = 0;
-      float dilationLerpSpeed = Util.getRandomInterval(0.00001f, 0.01f);
+      float dilationLerpSpeed = RandomGenerator.getRandomInterval(0.00001f, 0.01f);
       leftEye.targetDilation = targetDilation;
       leftEye.dilationLerp = dilationLerp;
       leftEye.dilationLerpSpeed = dilationLerpSpeed;

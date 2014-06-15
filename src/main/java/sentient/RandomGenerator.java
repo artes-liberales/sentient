@@ -2,7 +2,7 @@ package sentient;
 
 import java.util.Random;
 
-public class Util {
+public class RandomGenerator {
     public static Random javaRandom = new Random();
     
     /**

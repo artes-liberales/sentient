@@ -22,10 +22,10 @@ public class Thing {
      * Constructor.
      */
     public Thing() {
-        location = new PVector(Util.getRandomInterval(0, Sentient.MAP_WIDTH), Util.getRandomInterval(0, Sentient.MAP_HEIGHT));
+        location = new PVector(RandomGenerator.getRandomInterval(0, Sentient.MAP_WIDTH), RandomGenerator.getRandomInterval(0, Sentient.MAP_HEIGHT));
         velocity = new PVector(0, 0);
         acceleration = new PVector(0, 0);
-        angle = Util.getRandomInterval(0, Sentient.twoPi);
+        angle = RandomGenerator.getRandomInterval(0, Sentient.twoPi);
         mass = 1;
     }
     
@@ -73,6 +73,7 @@ public class Thing {
     
     public void wrapEdges() {
         float margin = 0;
+        
         // RIGHT EDGE
         if (location.x >= Sentient.MAP_WIDTH + radius - margin) {
             location.x = -radius + margin;// TO LEFT EDGE

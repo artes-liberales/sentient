@@ -40,7 +40,7 @@ public class Organism extends Thing {
     public Organism(Brain brain, float wingStrength2, int skinColor2, int irisColor) {
         super();
         randomName();
-        size = Util.gaussianCalculator(MAX_SIZE / 2, MAX_SIZE / 10);
+        size = RandomGenerator.gaussianCalculator(MAX_SIZE / 2, MAX_SIZE / 10);
         fat = 10000;
         hunger = 0;
         wingStrength = wingStrength2;
