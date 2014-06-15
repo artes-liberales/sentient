@@ -3,8 +3,9 @@ package sentient;
 import processing.core.PVector;
 
 public class Thing {
-    public float MAX_SPEED = 50f;
-    public float DAMPING = 0.98f;
+    public static final float MAX_SPEED = 50f;
+    public static final float DAMPING = 0.98f;
+    
     public PVector location;
     public PVector velocity;
     public PVector acceleration;
@@ -21,13 +22,11 @@ public class Thing {
      * Constructor.
      */
     public Thing() {
-        location = new PVector(Util.getRandomInterval(0, Sentient.width), Util.getRandomInterval(0, Sentient.height));
+        location = new PVector(Util.getRandomInterval(0, Sentient.MAP_WIDTH), Util.getRandomInterval(0, Sentient.MAP_HEIGHT));
         velocity = new PVector(0, 0);
         acceleration = new PVector(0, 0);
         angle = Util.getRandomInterval(0, Sentient.twoPi);
         mass = 1;
-        MAX_SPEED = 50f;
-        DAMPING = 0.98f;
     }
     
     public void update() {
@@ -75,20 +74,20 @@ public class Thing {
     public void wrapEdges() {
         float margin = 0;
         // RIGHT EDGE
-        if (location.x >= Sentient.width + radius - margin) {
+        if (location.x >= Sentient.MAP_WIDTH + radius - margin) {
             location.x = -radius + margin;// TO LEFT EDGE
         }
         // DOWN EDGE
-        else if (location.y >= Sentient.height + radius - margin) {
+        else if (location.y >= Sentient.MAP_HEIGHT + radius - margin) {
             location.y = -radius + margin;// TO TOP EDGE
         }
         // LEFT EDGE
         else if (location.x <= -radius + margin) {
-            location.x = Sentient.width + radius - margin;// TO RIGHT EDGE
+            location.x = Sentient.MAP_WIDTH + radius - margin;// TO RIGHT EDGE
         }
         // TOP EDGE
         else if (location.y <= -radius + margin) {
-            location.y = Sentient.height + radius - margin;// TO DOWN EDGE
+            location.y = Sentient.MAP_HEIGHT + radius - margin;// TO DOWN EDGE
         }
     }
 }

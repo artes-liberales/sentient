@@ -1,21 +1,21 @@
 package sentient.brain;
 
-public class AiAirHead implements Brain {
+public class AiAirhead implements Brain {
     /**
      * Constructor.
      */
-    public AiAirHead() {
+    public AiAirhead() {
     }
     
     /**
      * Copy constructor.
      */
-    private AiAirHead(Brain original) {
+    private AiAirhead(Brain original) {
     }
     
     //Clone it
     public Brain clone() {
-      return new AiAirHead(this);
+      return new AiAirhead(this);
     }
     
     public float[] think(float[] inputSignal) {

@@ -3,7 +3,7 @@ package sentient.food;
 import sentient.Thing;
 
 public class Candy extends Thing {
-    public float CANDY_SIZE = 20;
+    private static float CANDY_SIZE = 20;
     public int baseColor;
     
     /**

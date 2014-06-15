@@ -8,11 +8,9 @@ import sentient.brain.Brain;
 import sentient.food.Candy;
 
 public class Organism extends Thing {
-    public float MAX_SIZE = 150;
-    public float VISION = 120;
-    public float EYE_ANGLE = Sentient.pi / 2;
-    public float MAX_SPEED = 50f;
-    public float DAMPING = 0.98f;
+    public static final float MAX_SIZE = 150;
+    public static final float VISION = 120;
+    public static final float EYE_ANGLE = Sentient.pi / 2;
     
     public String name;
     
@@ -62,8 +60,6 @@ public class Organism extends Thing {
         randomName();
         location = new PVector(original.location.x, original.location.y);
         size = original.size;
-        MAX_SPEED = 50;
-        DAMPING = 0.98f;
         fat = size;
         hungry = false;
         skinColor = original.skinColor;
@@ -162,16 +158,16 @@ public class Organism extends Thing {
             float candyY = candy.location.y;
             
             // Consider wrapping of screen edges
-            if (Sentient.width / 2 < location.x - candyX) {
-                candyX += Sentient.width;
-            } else if (Sentient.width / 2 < candyX - location.x) {
-                candyX -= Sentient.width;
+            if (Sentient.MAP_WIDTH / 2 < location.x - candyX) {
+                candyX += Sentient.MAP_WIDTH;
+            } else if (Sentient.MAP_WIDTH / 2 < candyX - location.x) {
+                candyX -= Sentient.MAP_WIDTH;
             }
             
-            if (Sentient.height / 2 < location.y - candyY) {
-                candyY += Sentient.height;
-            } else if (Sentient.height / 2 < candyY - location.y) {
-                candyY -= Sentient.height;
+            if (Sentient.MAP_HEIGHT / 2 < location.y - candyY) {
+                candyY += Sentient.MAP_HEIGHT;
+            } else if (Sentient.MAP_HEIGHT / 2 < candyY - location.y) {
+                candyY -= Sentient.MAP_HEIGHT;
             }
             
             // Check if food is in field of vision

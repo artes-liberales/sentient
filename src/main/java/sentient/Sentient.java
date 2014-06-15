@@ -13,13 +13,13 @@ import sentient.food.Candy;
 public class Sentient extends PApplet {
     private static final long serialVersionUID = 5036190333019003029L;
     
-    public final int INIT_ORGANISMS = 30;
-    public final int INIT_CANDIES = 20;
-    public final int MAX_CANDIES = 100;
-    public final float CANDY_REFILL_RATE = 0.03f;
+    public static final int INIT_ORGANISMS = 30;
+    public static final int INIT_CANDIES = 20;
+    public static final int MAX_CANDIES = 100;
+    public static final float CANDY_REFILL_RATE = 0.03f;
     
-    public static final int width = 800;
-    public static final int height = 800;
+    public static final int MAP_WIDTH = 800;
+    public static final int MAP_HEIGHT = 800;
     public static final float pi = PI;
     public static final float twoPi = TWO_PI;
     
@@ -50,7 +50,7 @@ public class Sentient extends PApplet {
     public void setup() {
         // size(displayWidth, displayHeight, JAVA2D);
         // size(displayWidth, displayHeight, OPENGL);
-        size(width, height, JAVA2D);
+        size(MAP_WIDTH, MAP_HEIGHT, JAVA2D);
         // size(600, 600, OPENGL);
         frameRate(60);
         // smooth();
