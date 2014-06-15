@@ -66,7 +66,7 @@ class Eye {
     //Iris
     pushMatrix();
     translate(location.x+gaze.x*eyeSize/6, location.y+gaze.y*eyeSize/6);
-    //drawVisionArea();
+    drawVisionArea();
     noStroke();
     fill(irisColor);
     ellipse(0, 0, irisSize, irisSize); 

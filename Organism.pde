@@ -151,9 +151,9 @@ class Organism extends Thing {
     
     //translate(location.x, location.y);
     //rotate(angle);
-    //float[] inputSignal = lookForFood();
+    float[] inputSignal = lookForFood();
     //popMatrix();
-    float[] inputSignal = lookFoorFood();
+    //float[] inputSignal = lookFoorFood();
     float[] outputSignal = brain.think(inputSignal);
     if (0 <= leftWingFlapping && 1 <= outputSignal[0]) {
       leftWingFlapping = (int) random(5, 60);
