@@ -8,12 +8,9 @@ import sentient.brain.Brain;
 import sentient.food.Candy;
 
 public class Organism extends Thing {
-    public float MAX_SIZE = 150;
-    public float VISION = 120;
-    // final float EYE_ANGLE = PI / 8;
-    public float EYE_ANGLE = Sentient.pi / 2;
-    public float MAX_SPEED = 50f;
-    public float DAMPING = 0.98f;
+    public static final float MAX_SIZE = 150;
+    public static final float VISION = 120;
+    public static final float EYE_ANGLE = Sentient.pi / 2;
     
     public String name;
     
@@ -23,30 +20,25 @@ public class Organism extends Thing {
     public boolean hungry;
     
     public float wingLength;
-    
     public float leftWingAngle;
     public float rightWingAngle;
     public float leftWingFlapping = 0;
     public float rightWingFlapping = 0;
-    
-    public int skinColor;
-    
     public float wingStrength;
     public float wingSinR, wingSinL;
+    
+    public int skinColor;
     
     public Brain brain;
     public Face face;
     
-    public void setup() {
-        hungry = false;
-        randomName();
-    }
-    
-    // Constructor
+    /**
+     * Constructor.
+     */
     public Organism(Brain brain, float wingStrength2, int skinColor2, int irisColor) {
         super();
-        setup();
-        size = Sentient.gaussianCalculator(MAX_SIZE / 2, MAX_SIZE / 10);
+        randomName();
+        size = RandomGenerator.gaussianCalculator(MAX_SIZE / 2, MAX_SIZE / 10);
         fat = 10000;
         hunger = 0;
         wingStrength = wingStrength2;
@@ -58,14 +50,14 @@ public class Organism extends Thing {
         updateBodyProportions();
     }
     
-    // Copy constructor
+    /**
+     * Copy constructor.
+     */
     private Organism(Organism original) {
         super();
-        setup();
+        randomName();
         location = new PVector(original.location.x, original.location.y);
         size = original.size;
-        MAX_SPEED = 50;
-        DAMPING = 0.98f;
         fat = size;
         hungry = false;
         skinColor = original.skinColor;
@@ -164,22 +156,21 @@ public class Organism extends Thing {
             float candyY = candy.location.y;
             
             // Consider wrapping of screen edges
-            if (Sentient.width / 2 < location.x - candyX) {
-                candyX += Sentient.width;
-            } else if (Sentient.width / 2 < candyX - location.x) {
-                candyX -= Sentient.width;
+            if (Sentient.MAP_WIDTH / 2 < location.x - candyX) {
+                candyX += Sentient.MAP_WIDTH;
+            } else if (Sentient.MAP_WIDTH / 2 < candyX - location.x) {
+                candyX -= Sentient.MAP_WIDTH;
             }
             
-            if (Sentient.height / 2 < location.y - candyY) {
-                candyY += Sentient.height;
-            } else if (Sentient.height / 2 < candyY - location.y) {
-                candyY -= Sentient.height;
+            if (Sentient.MAP_HEIGHT / 2 < location.y - candyY) {
+                candyY += Sentient.MAP_HEIGHT;
+            } else if (Sentient.MAP_HEIGHT / 2 < candyY - location.y) {
+                candyY -= Sentient.MAP_HEIGHT;
             }
             
             // Check if food is in field of vision
             float distanceToCandy = Sentient.dist(location.x, location.y, candyX, candyY);
             if (distanceToCandy < VISION) {
-                
                 PVector foodDirection = new PVector(candyX - location.x, candyY - location.y);
                 
                 // Angles between eye looking directions and food direction
@@ -282,7 +273,6 @@ public class Organism extends Thing {
     }
     
     public void eat2() {
-        
         fat += 10;
         
         // Grow and divide

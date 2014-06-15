@@ -3,12 +3,16 @@ package sentient.brain;
 public class AiSeeker implements Brain {
     public Brain reptileBrain;
     
-    //Constructor
+    /**
+     * Constructor.
+     */
     public AiSeeker() {
       reptileBrain = new AiRandomFlapping();
     }
     
-    //Copy constructor
+    /**
+     * Copy constructor.
+     */
     private AiSeeker(Brain original) {
       reptileBrain = ((AiSeeker)original).getReptileBrain().clone();
     }

@@ -1,12 +1,15 @@
 package sentient.brain.network;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Neuron {
-    public ArrayList<Connection> connections;
+    public List<Connection> connections;
     public int sum;
     
-    // Constructor
+    /**
+     * Constructor.
+     */
     public Neuron() {
         connections = new ArrayList<Connection>();
         sum = 0;

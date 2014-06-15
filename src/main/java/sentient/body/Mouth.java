@@ -1,7 +1,9 @@
 package sentient.body;
 
 public class Mouth {  //tunga!
-    //mouthSize
+    /**
+     * Constructor.
+     */
     public Mouth(){
     
     }
