@@ -20,16 +20,14 @@ public class Organism extends Thing {
     public boolean hungry;
     
     public float wingLength;
-    
     public float leftWingAngle;
     public float rightWingAngle;
     public float leftWingFlapping = 0;
     public float rightWingFlapping = 0;
-    
-    public int skinColor;
-    
     public float wingStrength;
     public float wingSinR, wingSinL;
+    
+    public int skinColor;
     
     public Brain brain;
     public Face face;
