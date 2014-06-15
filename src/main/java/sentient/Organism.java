@@ -10,7 +10,6 @@ import sentient.food.Candy;
 public class Organism extends Thing {
     public float MAX_SIZE = 150;
     public float VISION = 120;
-    // final float EYE_ANGLE = PI / 8;
     public float EYE_ANGLE = Sentient.pi / 2;
     public float MAX_SPEED = 50f;
     public float DAMPING = 0.98f;
@@ -37,17 +36,12 @@ public class Organism extends Thing {
     public Brain brain;
     public Face face;
     
-    public void setup() {
-        hungry = false;
-        randomName();
-    }
-    
     /**
      * Constructor.
      */
     public Organism(Brain brain, float wingStrength2, int skinColor2, int irisColor) {
         super();
-        setup();
+        randomName();
         size = Util.gaussianCalculator(MAX_SIZE / 2, MAX_SIZE / 10);
         fat = 10000;
         hunger = 0;
@@ -65,7 +59,7 @@ public class Organism extends Thing {
      */
     private Organism(Organism original) {
         super();
-        setup();
+        randomName();
         location = new PVector(original.location.x, original.location.y);
         size = original.size;
         MAX_SPEED = 50;
@@ -183,7 +177,6 @@ public class Organism extends Thing {
             // Check if food is in field of vision
             float distanceToCandy = Sentient.dist(location.x, location.y, candyX, candyY);
             if (distanceToCandy < VISION) {
-                
                 PVector foodDirection = new PVector(candyX - location.x, candyY - location.y);
                 
                 // Angles between eye looking directions and food direction
@@ -286,7 +279,6 @@ public class Organism extends Thing {
     }
     
     public void eat2() {
-        
         fat += 10;
         
         // Grow and divide

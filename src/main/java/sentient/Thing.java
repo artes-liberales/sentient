@@ -30,16 +30,16 @@ public class Thing {
         DAMPING = 0.98f;
     }
     
-    void update() {
+    public void update() {
         eulerIntegration();
         wrapEdges();
     }
     
-    void draw() {
+    public void draw() {
     }
     
     // Update location, velocity, angle etc.
-    void eulerIntegration() {
+    public void eulerIntegration() {
         velocity.add(acceleration);
         velocity.mult(DAMPING);
         velocity.limit(MAX_SPEED);
@@ -58,14 +58,12 @@ public class Thing {
         angularAcc = 0;
     }
     
-    void applyForce(PVector force) {
-        
+    public void applyForce(PVector force) {
         PVector f = PVector.div(force, mass);
         acceleration.add(f);
-        
     }
     
-    void applyAngularForce(float af) {
+    public void applyAngularForce(float af) {
         angularAcc += af / mass;
     }
     
@@ -74,7 +72,7 @@ public class Thing {
         text(data, 0, 0);
     }*/
     
-    void wrapEdges() {
+    public void wrapEdges() {
         float margin = 0;
         // RIGHT EDGE
         if (location.x >= Sentient.width + radius - margin) {

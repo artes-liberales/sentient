@@ -6,7 +6,7 @@ public class Util {
     public static Random javaRandom = new Random();
     
     /**
-     * Get a random value withing the given interval.
+     * Get a random value within the given interval.
      */
     public static float getRandomInterval(float min, float max) {
         float range = (max - min);
