@@ -1,7 +1,9 @@
 package sentient.brain.network;
 
 public class OutputNeuron extends Neuron {
-    //Constructor
+    /**
+     * Constructor.
+     */
     public OutputNeuron() {
       super();
     }

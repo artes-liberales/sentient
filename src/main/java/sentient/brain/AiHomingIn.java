@@ -1,12 +1,16 @@
 package sentient.brain;
 
 public class AiHomingIn implements Brain {
-    //Constructor
+    /**
+     * Constructor.
+     */
     public AiHomingIn() {
       
     }
     
-    //Copy constructor
+    /**
+     * Copy constructor.
+     */
     private AiHomingIn(Brain original) {
       
     }

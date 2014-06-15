@@ -6,6 +6,9 @@ public class Connection {
     public Neuron toNeuron;
     public float weight;
     
+    /**
+     * Constructor.
+     */
     public Connection(Neuron to, float w) {
       toNeuron = to;
       weight = w;

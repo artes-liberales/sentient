@@ -1,12 +1,16 @@
 package sentient.brain.network;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Network {
     public final float MUTATION_RATE = 0.01f;
     
-    public ArrayList<Neuron> neurons;
+    public List<Neuron> neurons;
     
+    /**
+     * Constructor.
+     */
     public Network() {
         neurons = new ArrayList<Neuron>();
         
@@ -37,7 +41,9 @@ public class Network {
         addNeuron(output1);
     }
     
-    // Copy constructor
+    /**
+     * Copy constructor.
+     */
     private Network(Network original) {
         neurons = new ArrayList<Neuron>();
         

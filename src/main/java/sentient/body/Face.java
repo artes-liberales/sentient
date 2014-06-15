@@ -1,8 +1,8 @@
 package sentient.body;
 
 import processing.core.PVector;
-import sentient.Sentient;
 import sentient.Thing;
+import sentient.Util;
 
 public class Face {
     public float size;
@@ -14,6 +14,9 @@ public class Face {
     public boolean inMouth;
     public float bodyAngle;
     
+    /**
+     * Constructor.
+     */
     public Face(float s, PVector l, int irisColor) {
       size = s;
       location = new PVector(l.x, l.y);
@@ -46,7 +49,7 @@ public class Face {
     
     public void randomGaze() {
       PVector targetGaze = PVector.random2D();
-      float gazeLerpSpeed = Sentient.getRandomInterval(0.00001f, 0.01f);
+      float gazeLerpSpeed = Util.getRandomInterval(0.00001f, 0.01f);
       float gazeLerp = 0;
       leftEye.targetGaze = targetGaze;
       leftEye.gazeLerpSpeed = gazeLerpSpeed;
@@ -57,9 +60,9 @@ public class Face {
     }
     
     public void randomDilation() {
-      float targetDilation = Sentient.getRandomInterval(0.3f, 0.7f);
+      float targetDilation = Util.getRandomInterval(0.3f, 0.7f);
       float dilationLerp = 0;
-      float dilationLerpSpeed = Sentient.getRandomInterval(0.00001f, 0.01f);
+      float dilationLerpSpeed = Util.getRandomInterval(0.00001f, 0.01f);
       leftEye.targetDilation = targetDilation;
       leftEye.dilationLerp = dilationLerp;
       leftEye.dilationLerpSpeed = dilationLerpSpeed;

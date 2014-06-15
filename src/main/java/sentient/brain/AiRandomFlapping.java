@@ -1,16 +1,20 @@
 package sentient.brain;
 
-import sentient.Sentient;
+import sentient.Util;
 
 public class AiRandomFlapping implements Brain {
     public float flapLikelihood;
     
-    //Constructor
+    /**
+     * Constructor.
+     */
     public AiRandomFlapping() {
-      flapLikelihood = Sentient.getRandomInterval(0.005f, 0.02f);
+      flapLikelihood = Util.getRandomInterval(0.005f, 0.02f);
     }
     
-    //Copy constructor
+    /**
+     * Copy constructor.
+     */
     private AiRandomFlapping(Brain original) {
       flapLikelihood = ((AiRandomFlapping)original).flapLikelihood;
     }

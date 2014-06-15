@@ -1,11 +1,15 @@
 package sentient.brain;
 
 public class AiAirHead implements Brain {
-    //Constructor
+    /**
+     * Constructor.
+     */
     public AiAirHead() {
     }
     
-    //Copy constructor
+    /**
+     * Copy constructor.
+     */
     private AiAirHead(Brain original) {
     }
     

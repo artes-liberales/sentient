@@ -2,7 +2,6 @@ package sentient;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import processing.core.PApplet;
 import sentient.body.Eye;
@@ -13,8 +12,6 @@ import sentient.food.Candy;
 
 public class Sentient extends PApplet {
     private static final long serialVersionUID = 5036190333019003029L;
-    
-    public static Random javaRandom;
     
     public final int INIT_ORGANISMS = 30;
     public final int INIT_CANDIES = 20;
@@ -62,13 +59,12 @@ public class Sentient extends PApplet {
         ellipseMode(CENTER);
         //dataFont = loadFont("LetterGothicMTStd-Bold-10.vlw");
         textAlign(CENTER, CENTER);
-        javaRandom = new Random();
         
         organisms = new ArrayList<Organism>();
         for (int i = 0; i < INIT_ORGANISMS; i++) {
             float wingStrength = random(0.08f, 0.2f);
             int skinColor = color(random(360), Sentient.getMap(wingStrength, 0.08f, 0.2f, 40f, 70f), 95);
-            int irisColor = color((int)Sentient.getRandomInterval(120, 250), 40, 100);
+            int irisColor = color((int)Util.getRandomInterval(120, 250), 40, 100);
             Organism org = new Organism(new AiNetwork(), wingStrength, skinColor, irisColor);
             organisms.add(org);
             // organisms.add(new Organism(new AiRandomFlapping()));
@@ -244,11 +240,6 @@ public class Sentient extends PApplet {
      * sentient.update(); sentient.draw(); }
      */
     
-    public static float gaussianCalculator(float mean, float standardDeviation) {
-        float g = (float) javaRandom.nextGaussian();
-        return standardDeviation * g + mean;
-    }
-    
     public static float getCos(float x) {
         return cos(x);
     }
@@ -271,10 +262,5 @@ public class Sentient extends PApplet {
     
     public static float getLerp(float dilation, float targetDilation, float dilationLerp) {
         return lerp(dilation, targetDilation, dilationLerp);
-    }
-    
-    public static float getRandomInterval(float min, float max) {
-        float range = (max - min);
-       return (float) ((Math.random() * range) + min);
     }
 }

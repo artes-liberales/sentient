@@ -1,7 +1,9 @@
 package sentient.brain.network;
 
 public class BiasNeuron extends Neuron {
-    //Constructor
+    /**
+     * Constructor.
+     */
     public BiasNeuron(int sum) {
       super();
       this.sum = sum;

@@ -5,12 +5,16 @@ import sentient.brain.network.Network;
 public class AiNetwork implements Brain {
     public Network network;
     
-    // Constructor
+    /**
+     * Constructor.
+     */
     public AiNetwork() {
         network = new Network();
     }
     
-    // Copy constructor
+    /**
+     * Copy constructor.
+     */
     private AiNetwork(AiNetwork original) {
         network = original.network.clone();
     }

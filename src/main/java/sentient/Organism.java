@@ -42,11 +42,13 @@ public class Organism extends Thing {
         randomName();
     }
     
-    // Constructor
+    /**
+     * Constructor.
+     */
     public Organism(Brain brain, float wingStrength2, int skinColor2, int irisColor) {
         super();
         setup();
-        size = Sentient.gaussianCalculator(MAX_SIZE / 2, MAX_SIZE / 10);
+        size = Util.gaussianCalculator(MAX_SIZE / 2, MAX_SIZE / 10);
         fat = 10000;
         hunger = 0;
         wingStrength = wingStrength2;
@@ -58,7 +60,9 @@ public class Organism extends Thing {
         updateBodyProportions();
     }
     
-    // Copy constructor
+    /**
+     * Copy constructor.
+     */
     private Organism(Organism original) {
         super();
         setup();

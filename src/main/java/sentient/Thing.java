@@ -17,11 +17,14 @@ public class Thing {
     public float mass;
     public boolean spotted = false;
     
+    /**
+     * Constructor.
+     */
     public Thing() {
-        location = new PVector(Sentient.getRandomInterval(0, Sentient.width), Sentient.getRandomInterval(0, Sentient.height));
+        location = new PVector(Util.getRandomInterval(0, Sentient.width), Util.getRandomInterval(0, Sentient.height));
         velocity = new PVector(0, 0);
         acceleration = new PVector(0, 0);
-        angle = Sentient.getRandomInterval(0, Sentient.twoPi);
+        angle = Util.getRandomInterval(0, Sentient.twoPi);
         mass = 1;
         MAX_SPEED = 50f;
         DAMPING = 0.98f;
