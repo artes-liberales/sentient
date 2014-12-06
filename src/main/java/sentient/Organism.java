@@ -29,7 +29,7 @@ public class Organism extends Thing {
     
     public int skinColor;
     
-    public Brain brain;
+    private Brain brain;
     public Face face;
     
     /**
@@ -86,46 +86,40 @@ public class Organism extends Thing {
         wingLength = radius * wingStrength * 2;
     }
     
-    // Update it
+    /**
+     * Encompasses everything the organism does.
+     */
     public void update(List<Candy> candies) {
         face.leftEye.locationT = new PVector(location.x, location.y);
         face.rightEye.locationT = new PVector(location.x, location.y);
         face.bodyAngle = angle;
         face.update();
         
-        percieve();
-        moveBodyParts(candies);
+        float[] outputSignal = percieveAndThink(candies);
+        moveBodyParts(outputSignal);
         eat();
         burnFat();
         super.update();
     }
     
-    private void percieve() {
-        // float[] inputSignal = face.percieve();
-        // float[] outputSignal = brain.think(inputSignal);
+    /**
+     * Perceive surroundings and decide on actions.
+     */
+    private float[] percieveAndThink(List<Candy> candies) {
+        float[] inputSignal = lookForFood(candies);
+        float[] outputSignal = brain.think(inputSignal);
+        return outputSignal;
     }
     
     /**
      * Move body parts.
      */
-    private void moveBodyParts(List<Candy> candies) {
-        // Percieve, could theese be ivars instead?
-        // pushMatrix();
-        
-        // translate(location.x, location.y);
-        // rotate(angle);
-        // float[] inputSignal = lookForFood();
-        // popMatrix();
-        float[] inputSignal = lookForFood(candies);
-        float[] outputSignal = brain.think(inputSignal);
-        
+    private void moveBodyParts(float[] outputSignal) {
         if (0 <= leftWingFlapping && 1 <= outputSignal[0]) {
-            //leftWingFlapping = (int) random(5, 60);
             leftWingFlapping = 30;
         }
         
         if (0 <= rightWingFlapping && 1 <= outputSignal[1]) {
-            //rightWingFlapping = (int) random(5, 60);
             rightWingFlapping = 30;
         }
         
@@ -139,17 +133,17 @@ public class Organism extends Thing {
     }
     
     /**
-     * Look for food to create the input signal to the brain.
+     * Look for food in front of the organism
+     * to create the input signal to the brain.
+     * inputSignal[0] == 1 means that there is food to the left
+     * inputSignal[1] == 1 means that there is food to the right
+     * There can be food both to the left and to the right
      */
-    // See if there is food in front of the organism
-    // inputSignal[0] == 1 means that there is food to the left
-    // inputSignal[1] == 1 means that there is food to the right
-    // There can be food both to the left and to the right
     private float[] lookForFood(List<Candy> candies) {
         // Signal that is to be sent as input to the brain
         float[] inputSignal = new float[3];
         
-        // The angles that the eyes are looking in
+        // Angles that the eyes are looking in
         float leftEyeAngle = angle - EYE_ANGLE;
         float rightEyeAngle = angle + EYE_ANGLE;
         
@@ -200,31 +194,9 @@ public class Organism extends Thing {
         return inputSignal;
     }
     
-    /*public float[] lookForFood(List<Candy> candies) {
-        // Signal that is to be sent as input to the brain
-        float[] inputSignal = new float[3];
-        
-        for (int i = 0; i < candies.size(); i++) {
-            Candy candy = (Candy) candies.get(i);
-            
-            PVector candySeen = face.percieve(candy);
-            if (candySeen != null) {// deterimine angle in relation to body to
-                                    // send input
-                // angle -
-                inputSignal[0] = 1;
-                inputSignal[1] = 1;
-                if (face.inMouth) {
-                    eat2();
-                    candies.remove(i);
-                    face.inMouth = false;
-                }
-            }
-        }
-        
-        return inputSignal;
-    }*/
-    
-    // Flap left wing
+    /**
+     * Flap left wing.
+     */
     private void flapLeftWing() {
         leftWingAngle = Sentient.getSin(wingSinL * wingStrength * 0.12f);
         float flapStrengthL = wingStrength * leftWingFlapping / 40f + leftWingAngle * 0.05f;
@@ -236,7 +208,9 @@ public class Organism extends Thing {
         wingSinL += leftWingFlapping;
     }
     
-    // Flap right wing
+    /**
+     * Flap right wing.
+     */
     private void flapRightWing() {
         rightWingAngle = Sentient.getSin(wingSinR * wingStrength * 0.12f);
         float flapStrengthR = wingStrength * rightWingFlapping / 40 + rightWingAngle * 0.05f;
