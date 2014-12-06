@@ -1,6 +1,5 @@
 package sentient.brain.network;
 
-
 public class Connection {
     public Neuron toNeuron;
     public float weight;

@@ -29,7 +29,7 @@ public class Thing {
         mass = 1;
     }
     
-    public void update() {
+    protected void update() {
         eulerIntegration();
         wrapEdges();
     }
@@ -38,7 +38,7 @@ public class Thing {
     }
     
     // Update location, velocity, angle etc.
-    public void eulerIntegration() {
+    protected void eulerIntegration() {
         velocity.add(acceleration);
         velocity.mult(DAMPING);
         velocity.limit(MAX_SPEED);
@@ -57,12 +57,12 @@ public class Thing {
         angularAcc = 0;
     }
     
-    public void applyForce(PVector force) {
+    protected void applyForce(PVector force) {
         PVector f = PVector.div(force, mass);
         acceleration.add(f);
     }
     
-    public void applyAngularForce(float af) {
+    protected void applyAngularForce(float af) {
         angularAcc += af / mass;
     }
     
@@ -71,7 +71,7 @@ public class Thing {
         text(data, 0, 0);
     }*/
     
-    public void wrapEdges() {
+    protected void wrapEdges() {
         float margin = 0;
         
         // RIGHT EDGE

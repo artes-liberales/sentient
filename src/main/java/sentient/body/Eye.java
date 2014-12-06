@@ -69,7 +69,7 @@ public class Eye {
         visionLength = eyeSize * 10;
     }
     
-    public void calculateVisionScope() {
+    private void calculateVisionScope() {
         float eyeAngle = gaze.heading();
         float eyeZ = gaze.mag();
         visionBreadthA = visionBreadth / (eyeZ * 3);
@@ -116,27 +116,27 @@ public class Eye {
         arc(0, 0, visionScope, visionScope, visionStartAngle, visionStopAngle, PIE);
     }*/
     
-    public void randomGaze() {
+    private void randomGaze() {
         targetGaze = PVector.random2D();
         gazeLerpSpeed = RandomGenerator.getRandomInterval(0.001f, 0.01f);
         gazeLerp = 0;
     }
     
-    public void fixGaze() {
+    private void fixGaze() {
     }
     
-    public void lerpGaze() {
+    private void lerpGaze() {
         gaze.lerp(targetGaze, gazeLerp);
         gazeLerp += gazeLerpSpeed;
     }
     
-    public void randomDilation() {
+    private void randomDilation() {
         targetDilation = RandomGenerator.getRandomInterval(0.3f, 0.7f);
         dilationLerp = 0;
         dilationLerpSpeed = RandomGenerator.getRandomInterval(0.001f, 0.01f);
     }
     
-    public void lerpDilation() {
+    private void lerpDilation() {
         dilation = Sentient.getLerp(dilation, targetDilation, dilationLerp);
         dilationLerp += dilationLerpSpeed;
         pupilSize = irisSize * dilation;

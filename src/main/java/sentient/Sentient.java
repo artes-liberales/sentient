@@ -90,7 +90,7 @@ public class Sentient extends PApplet {
     }
     
     // Update and draw organisms
-    public void drawOrganisms() {
+    private void drawOrganisms() {
         for (int i = 0; i < organisms.size(); i++) {
             Organism organism = (Organism) organisms.get(i);
             organism.update(candies);
@@ -196,7 +196,7 @@ public class Sentient extends PApplet {
     }*/
     
     // Draw candy
-    public void drawCandy() {
+    private void drawCandy() {
         for (int i = 0; i < candies.size(); i++) {
             Candy candy = (Candy) candies.get(i);
             
@@ -221,7 +221,7 @@ public class Sentient extends PApplet {
     }
     
     // Create random new candy
-    public void createCandy() {
+    private void createCandy() {
         if (candies.size() < MAX_CANDIES && random(1) < CANDY_REFILL_RATE) {
             int baseColor = color(random(360), 60, 95);
             candies.add(new Candy(baseColor));

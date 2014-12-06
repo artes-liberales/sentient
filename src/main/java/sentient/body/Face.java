@@ -47,7 +47,7 @@ public class Face {
       mouth.updateProportions(size);
     }
     
-    public void randomGaze() {
+    private void randomGaze() {
       PVector targetGaze = PVector.random2D();
       float gazeLerpSpeed = RandomGenerator.getRandomInterval(0.00001f, 0.01f);
       float gazeLerp = 0;
@@ -59,7 +59,7 @@ public class Face {
       rightEye.gazeLerp = gazeLerp;
     }
     
-    public void randomDilation() {
+    private void randomDilation() {
       float targetDilation = RandomGenerator.getRandomInterval(0.3f, 0.7f);
       float dilationLerp = 0;
       float dilationLerpSpeed = RandomGenerator.getRandomInterval(0.00001f, 0.01f);

@@ -77,7 +77,7 @@ public class Organism extends Thing {
     }
     
     // Update size of body parts
-    public void updateBodyProportions() {
+    private void updateBodyProportions() {
         face.updateProportions(size);
         mass = size * 0.1f;
         radius = size / 2;
@@ -98,13 +98,13 @@ public class Organism extends Thing {
         super.update();
     }
     
-    public void percieve() {
+    private void percieve() {
         // float[] inputSignal = face.percieve();
         // float[] outputSignal = brain.think(inputSignal);
     }
     
     // Move body parts
-    public void moveBodyParts(List<Candy> candies) {
+    private void moveBodyParts(List<Candy> candies) {
         // Percieve, could theese be ivars instead?
         // pushMatrix();
         
@@ -138,7 +138,7 @@ public class Organism extends Thing {
     // inputSignal[0] == 1 means that there is food to the left
     // inputSignal[1] == 1 means that there is food to the right
     // There can be food both to the left and to the right
-    public float[] lookForFood(List<Candy> candies) {
+    private float[] lookForFood(List<Candy> candies) {
         // Signal that is to be sent as input to the brain
         float[] inputSignal = new float[3];
         
@@ -226,7 +226,7 @@ public class Organism extends Thing {
     }*/
     
     // Flap left wing
-    public void flapLeftWing() {
+    private void flapLeftWing() {
         leftWingAngle = Sentient.getSin(wingSinL * wingStrength * 0.12f);
         float flapStrengthL = wingStrength * leftWingFlapping / 40f + leftWingAngle * 0.05f;
         applyAngularForce(flapStrengthL / 50);
@@ -238,7 +238,7 @@ public class Organism extends Thing {
     }
     
     // Flap right wing
-    public void flapRightWing() {
+    private void flapRightWing() {
         rightWingAngle = Sentient.getSin(wingSinR * wingStrength * 0.12f);
         float flapStrengthR = wingStrength * rightWingFlapping / 40 + rightWingAngle * 0.05f;
         applyAngularForce(-flapStrengthR / 50);
@@ -272,7 +272,7 @@ public class Organism extends Thing {
         return false;
     }*/
     
-    public void eat() {
+    private void eat() {
         fat += 10;
         
         // Grow and divide
@@ -292,7 +292,7 @@ public class Organism extends Thing {
     }
     
     // Burn fat
-    public void burnFat() {
+    private void burnFat() {
         fat -= size * 0.0002;
         
         if (0 < leftWingFlapping) {
@@ -313,7 +313,7 @@ public class Organism extends Thing {
     }
     
     // Divide into two organisms
-    public void divide() {
+    private void divide() {
         if (MAX_SIZE <= fat) {
             Sentient.organisms.add(new Organism(this));
             fat = MAX_SIZE / 2;
