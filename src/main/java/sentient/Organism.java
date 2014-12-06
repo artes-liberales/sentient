@@ -8,7 +8,7 @@ import sentient.brain.Brain;
 import sentient.food.Candy;
 
 public class Organism extends Thing {
-    public static final float MAX_SIZE = 150;
+    public static final float MAX_SIZE = 100;
     public static final float VISION = 120;
     public static final float EYE_ANGLE = Sentient.pi / 2;
     
@@ -39,7 +39,7 @@ public class Organism extends Thing {
         super();
         randomName();
         size = RandomGenerator.gaussianCalculator(MAX_SIZE / 2, MAX_SIZE / 10);
-        fat = 10000;
+        fat = size;
         hunger = 0;
         wingStrength = wingStrength2;
         skinColor = skinColor2;
@@ -57,7 +57,7 @@ public class Organism extends Thing {
         super();
         randomName();
         location = new PVector(original.location.x, original.location.y);
-        size = original.size;
+        size = original.size / 4;
         fat = size;
         hungry = false;
         skinColor = original.skinColor;
@@ -112,7 +112,7 @@ public class Organism extends Thing {
         // rotate(angle);
         // float[] inputSignal = lookForFood();
         // popMatrix();
-        float[] inputSignal = lookFoorFood(candies);
+        float[] inputSignal = lookForFood(candies);
         float[] outputSignal = brain.think(inputSignal);
         
         if (0 <= leftWingFlapping && 1 <= outputSignal[0]) {
@@ -138,7 +138,7 @@ public class Organism extends Thing {
     // inputSignal[0] == 1 means that there is food to the left
     // inputSignal[1] == 1 means that there is food to the right
     // There can be food both to the left and to the right
-    public float[] lookFoorFood(List<Candy> candies) {
+    public float[] lookForFood(List<Candy> candies) {
         // Signal that is to be sent as input to the brain
         float[] inputSignal = new float[3];
         
@@ -190,7 +190,7 @@ public class Organism extends Thing {
                 }
                 
                 if (distanceToCandy < radius) {
-                    eat2();
+                    eat();
                     candies.remove(i);
                 }
             }
@@ -201,7 +201,7 @@ public class Organism extends Thing {
         return inputSignal;
     }
     
-    public float[] lookForFood(List<Candy> candies) {
+    /*public float[] lookForFood(List<Candy> candies) {
         // Signal that is to be sent as input to the brain
         float[] inputSignal = new float[3];
         
@@ -223,7 +223,7 @@ public class Organism extends Thing {
         }
         
         return inputSignal;
-    }
+    }*/
     
     // Flap left wing
     public void flapLeftWing() {
@@ -250,7 +250,7 @@ public class Organism extends Thing {
     }
     
     // Eat food that is inside body radius
-    public boolean eat() {
+    /*public boolean eat() {
         for (int i = 0; i < Sentient.candies.size(); i++) {
             Candy candy = (Candy) Sentient.candies.get(i);
             
@@ -270,16 +270,24 @@ public class Organism extends Thing {
         }
         
         return false;
-    }
+    }*/
     
-    public void eat2() {
+    public void eat() {
         fat += 10;
         
         // Grow and divide
         if (size < fat) {
-            size += 10;
+            grow();
             divide();
             updateBodyProportions();
+        }
+    }
+    
+    private void grow() {
+        size += 10;
+        
+        if (MAX_SIZE < size) {
+            size = MAX_SIZE;
         }
     }
     
@@ -306,10 +314,9 @@ public class Organism extends Thing {
     
     // Divide into two organisms
     public void divide() {
-        if (MAX_SIZE <= size) {
-            size = MAX_SIZE / 2;
-            fat = size;
+        if (MAX_SIZE <= fat) {
             Sentient.organisms.add(new Organism(this));
+            fat = MAX_SIZE / 2;
         }
     }
 }
