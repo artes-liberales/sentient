@@ -76,7 +76,9 @@ public class Organism extends Thing {
         name = "KLAS";
     }
     
-    // Update size of body parts
+    /**
+     * Update size of body parts.
+     */
     private void updateBodyProportions() {
         face.updateProportions(size);
         mass = size * 0.1f;
@@ -93,7 +95,7 @@ public class Organism extends Thing {
         
         percieve();
         moveBodyParts(candies);
-        // eat();
+        eat();
         burnFat();
         super.update();
     }
@@ -103,7 +105,9 @@ public class Organism extends Thing {
         // float[] outputSignal = brain.think(inputSignal);
     }
     
-    // Move body parts
+    /**
+     * Move body parts.
+     */
     private void moveBodyParts(List<Candy> candies) {
         // Percieve, could theese be ivars instead?
         // pushMatrix();
@@ -134,6 +138,9 @@ public class Organism extends Thing {
         }
     }
     
+    /**
+     * Look for food to create the input signal to the brain.
+     */
     // See if there is food in front of the organism
     // inputSignal[0] == 1 means that there is food to the left
     // inputSignal[1] == 1 means that there is food to the right
@@ -180,18 +187,10 @@ public class Organism extends Thing {
                         / (rightEyeLookingDirection.mag() * foodDirection.mag()));
                 
                 // Determine if food is in left or right field of vision
-                
                 if (Math.abs(leftTheta) < EYE_ANGLE) {
                     inputSignal[0] = 1;
-                    // candy.spotted = true;
                 } else if (Math.abs(rightTheta) < EYE_ANGLE) {
                     inputSignal[1] = 1;
-                    // candy.spotted = true;
-                }
-                
-                if (distanceToCandy < radius) {
-                    eat();
-                    candies.remove(i);
                 }
             }
         }
@@ -249,30 +248,28 @@ public class Organism extends Thing {
         wingSinR += rightWingFlapping;
     }
     
-    // Eat food that is inside body radius
-    /*public boolean eat() {
+    /**
+     * Eat food that is inside body radius.
+     */
+    public boolean eat() {
         for (int i = 0; i < Sentient.candies.size(); i++) {
             Candy candy = (Candy) Sentient.candies.get(i);
             
-            if (Sentient.dist(location.x, location.y, candy.location.x, candy.location.y) < radius) {
-                fat += 10;
-                
-                // Grow and divide
-                if (size < fat) {
-                    size += 10;
-                    divide();
-                    updateBodyProportions();
-                }
-                
+            float distanceToCandy = Sentient.dist(location.x, location.y, candy.location.x, candy.location.y);
+            if (distanceToCandy < radius) {
+                digestFood();
                 Sentient.candies.remove(i);
                 return true;
             }
         }
         
         return false;
-    }*/
+    }
     
-    private void eat() {
+    /**
+     * Digest food.
+     */
+    private void digestFood() {
         fat += 10;
         
         // Grow and divide
@@ -283,6 +280,9 @@ public class Organism extends Thing {
         }
     }
     
+    /**
+     * Increase size of organism.
+     */
     private void grow() {
         size += 10;
         
@@ -291,7 +291,9 @@ public class Organism extends Thing {
         }
     }
     
-    // Burn fat
+    /**
+     * Burn fat.
+     */
     private void burnFat() {
         fat -= size * 0.0002;
         
@@ -312,7 +314,9 @@ public class Organism extends Thing {
         }
     }
     
-    // Divide into two organisms
+    /**
+     * Create offspring.
+     */
     private void divide() {
         if (MAX_SIZE <= fat) {
             Sentient.organisms.add(new Organism(this));
