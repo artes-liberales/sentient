@@ -6,7 +6,7 @@ import java.util.List;
 public class Network {
     private static final float MUTATION_RATE = 0.01f;
     
-    public List<Neuron> neurons;
+    private List<Neuron> neurons;
     
     /**
      * Constructor.

@@ -16,7 +16,7 @@ public class Organism extends Thing {
     
     public float size;
     public float fat;
-    public float hunger;
+    private float hunger;
     public boolean hungry;
     
     public float wingLength;
@@ -225,7 +225,7 @@ public class Organism extends Thing {
     /**
      * Eat food that is inside body radius.
      */
-    public boolean eat() {
+    private boolean eat() {
         for (int i = 0; i < Sentient.candies.size(); i++) {
             Candy candy = (Candy) Sentient.candies.get(i);
             

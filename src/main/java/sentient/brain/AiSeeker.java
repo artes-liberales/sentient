@@ -31,7 +31,6 @@ public class AiSeeker implements Brain {
         return reptileBrain.think(inputSignal);
       }
       
-      
       float[] outputSignal = new float[2];
       
       if (1 == inputSignal[0]) {
