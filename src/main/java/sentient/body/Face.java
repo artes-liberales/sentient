@@ -28,13 +28,17 @@ public class Face {
     }
     
     public void update() {
-      if (0.01 > Math.random() && leftEye.gazeLerp >= 1) randomGaze();
-      if (0.01 > Math.random() && leftEye.dilationLerp >= 1) randomDilation();
+      if (0.01 > Math.random() && leftEye.gazeLerp >= 1) {
+          randomGaze();
+      }
+      
+      if (0.01 > Math.random() && leftEye.dilationLerp >= 1) {
+          randomDilation();
+      }
+      
       mouth.updateProportions(size);
-      leftEye.update();
-      rightEye.update();
-      leftEye.bodyAngle = bodyAngle;
-      rightEye.bodyAngle = bodyAngle;
+      leftEye.update(bodyAngle);
+      rightEye.update(bodyAngle);
     }
     
     public void updateProportions(float s) {

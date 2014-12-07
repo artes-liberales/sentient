@@ -49,7 +49,8 @@ public class Eye {
         this.irisColor = irisColor;
     }
     
-    public void update() {
+    public void update(float bodyAngle) {
+        this.bodyAngle = bodyAngle;
         if (0.01 > Math.random() && gazeLerp >= 1)
             randomGaze();
         if (gazeLerp < 1)
@@ -86,7 +87,7 @@ public class Eye {
       if (distanceToThing < visionScope/2) {
         PVector thingDirection = new PVector(x - locationT.x+location.x, y - locationT.y+location.x);
         //PVector thingDirection = new PVector(x - 0, y - 0);
-        float  gazeAngle = gaze.heading()+bodyAngle;
+        float  gazeAngle = gaze.heading() + bodyAngle;
         PVector trueGazeVector = PVector.fromAngle(gazeAngle);
         
         float angleToThing = PVector.angleBetween(thingDirection, trueGazeVector);
