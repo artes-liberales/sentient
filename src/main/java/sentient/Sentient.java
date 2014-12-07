@@ -105,13 +105,6 @@ public class Sentient extends PApplet {
     }
     
     private void drawOraganism(Organism organism) {
-        //color c = organism.skinColor;
-        
-        //Another color if hungry
-        if (organism.hungry) {
-            //c = #FF0000;
-        }
-        
         pushMatrix();
         
         translate(organism.location.x, organism.location.y);

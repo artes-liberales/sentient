@@ -13,20 +13,18 @@ public class Organism extends Thing {
     public static final float EYE_ANGLE = Sentient.pi / 2;
     
     public String name;
-    
     public float size;
     public float fat;
-    public boolean hungry;
+    public int skinColor;
     
     public float wingLength;
     public float leftWingAngle;
     public float rightWingAngle;
-    public float leftWingFlapping = 0;
-    public float rightWingFlapping = 0;
-    public float wingStrength;
-    public float wingSinR, wingSinL;
-    
-    public int skinColor;
+    private float leftWingFlapping;
+    private float rightWingFlapping;
+    private float wingStrength;
+    private float wingSinR;
+    private float wingSinL;
     
     private Brain brain;
     public Face face;
@@ -34,13 +32,13 @@ public class Organism extends Thing {
     /**
      * Constructor.
      */
-    public Organism(Brain brain, float wingStrength2, int skinColor2, int irisColor) {
+    public Organism(Brain brain, float wingStrength, int skinColor, int irisColor) {
         super();
         randomName();
         size = RandomGenerator.gaussianCalculator(MAX_SIZE / 2, MAX_SIZE / 10);
         fat = size;
-        wingStrength = wingStrength2;
-        skinColor = skinColor2;
+        this.wingStrength = wingStrength;
+        this.skinColor = skinColor;
         face = new Face(size, location, irisColor);
         face.skinColor = skinColor;
         
@@ -57,7 +55,6 @@ public class Organism extends Thing {
         location = new PVector(original.location.x, original.location.y);
         size = original.size / 4;
         fat = size;
-        hungry = false;
         skinColor = original.skinColor;
         wingStrength = original.wingStrength;
         face = new Face(size, location, original.face.leftEye.irisColor);
@@ -96,7 +93,8 @@ public class Organism extends Thing {
         face.rightEye.locationT = new PVector(location.x, location.y);
         face.update(angle, getHunger());
         
-        float[] outputSignal = percieveAndThink(candies);
+        float[] inputSignal = lookForFood(candies);
+        float[] outputSignal = brain.think(inputSignal);
         moveBodyParts(outputSignal);
         eat();
         burnFat();
@@ -104,23 +102,14 @@ public class Organism extends Thing {
     }
     
     /**
-     * Perceive surroundings and decide on actions.
-     */
-    private float[] percieveAndThink(List<Candy> candies) {
-        float[] inputSignal = lookForFood(candies);
-        float[] outputSignal = brain.think(inputSignal);
-        return outputSignal;
-    }
-    
-    /**
      * Move body parts.
      */
     private void moveBodyParts(float[] outputSignal) {
-        if (0 <= leftWingFlapping && 1 <= outputSignal[0]) {
+        if (1 <= outputSignal[0]) {
             leftWingFlapping = 30;
         }
         
-        if (0 <= rightWingFlapping && 1 <= outputSignal[1]) {
+        if (1 <= outputSignal[1]) {
             rightWingFlapping = 30;
         }
         
@@ -278,12 +267,6 @@ public class Organism extends Thing {
         
         if (0 < rightWingFlapping) {
             fat -= size * 0.0001;
-        }
-        
-        if (fat < size / 5) {
-            hungry = true;
-        } else {
-            hungry = false;
         }
     }
     
