@@ -216,11 +216,13 @@ public class Organism extends Thing {
      * Eat food that is inside body radius.
      */
     private boolean eat() {
+        PVector mouthLocation = face.getMouthLocation();
+        
         for (int i = 0; i < Sentient.candies.size(); i++) {
             Candy candy = (Candy) Sentient.candies.get(i);
             
-            float distanceToCandy = Sentient.dist(location.x, location.y, candy.location.x, candy.location.y);
-            if (distanceToCandy < radius) {
+            float distanceToCandy = Sentient.dist(mouthLocation.x, mouthLocation.y, candy.location.x, candy.location.y);
+            if (distanceToCandy < MAX_SIZE / 2) {
                 digestFood();
                 Sentient.candies.remove(i);
                 return true;
