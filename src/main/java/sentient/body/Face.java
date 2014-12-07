@@ -8,9 +8,9 @@ public class Face {
     public float size;
     public int skinColor;
     public PVector location;
+    public Mouth mouth;
     public Eye leftEye;
     public Eye rightEye;
-    public Mouth mouth;
     public float bodyAngle;
     
     /**
@@ -27,28 +27,30 @@ public class Face {
       //rightEye.irisColor = irisColor;
     }
     
-    public void update() {
-      if (0.01 > Math.random() && leftEye.gazeLerp >= 1) {
-          randomGaze();
-      }
-      
-      if (0.01 > Math.random() && leftEye.dilationLerp >= 1) {
-          randomDilation();
-      }
-      
-      mouth.updateProportions(size);
-      leftEye.update(bodyAngle);
-      rightEye.update(bodyAngle);
+    public void update(float bodyAngle, float hunger) {
+        this.bodyAngle = bodyAngle;
+        
+        if (0.01 > Math.random() && leftEye.gazeLerp >= 1) {
+            randomGaze();
+        }
+        
+        if (0.01 > Math.random() && leftEye.dilationLerp >= 1) {
+            randomDilation();
+        }
+        
+        mouth.updateProportions(size, hunger);
+        leftEye.update(bodyAngle);
+        rightEye.update(bodyAngle);
     }
     
-    public void updateProportions(float s) {
-      size = s;
+    public void updateProportions(float bodySize, float hunger) {
+      this.size = bodySize;
       float eyeSize = size / 4;
       float eyeX = size/4;
       float eyeY = size/4;
       leftEye.updateProportions( eyeSize, eyeX, eyeY );
       rightEye.updateProportions( eyeSize, eyeX, -eyeY );
-      mouth.updateProportions(size);
+      mouth.updateProportions(size, hunger);
     }
     
     private void randomGaze() {

@@ -16,7 +16,6 @@ public class Organism extends Thing {
     
     public float size;
     public float fat;
-    private float hunger;
     public boolean hungry;
     
     public float wingLength;
@@ -40,7 +39,6 @@ public class Organism extends Thing {
         randomName();
         size = RandomGenerator.gaussianCalculator(MAX_SIZE / 2, MAX_SIZE / 10);
         fat = size;
-        hunger = 0;
         wingStrength = wingStrength2;
         skinColor = skinColor2;
         face = new Face(size, location, irisColor);
@@ -72,6 +70,10 @@ public class Organism extends Thing {
         return brain;
     }
     
+    public float getHunger() {
+        return 1 - fat / size;
+    }
+    
     public void randomName() {
         name = "KLAS";
     }
@@ -80,7 +82,7 @@ public class Organism extends Thing {
      * Update size of body parts.
      */
     private void updateBodyProportions() {
-        face.updateProportions(size);
+        face.updateProportions(size, getHunger());
         mass = size * 0.1f;
         radius = size / 2;
         wingLength = radius * wingStrength * 2;
@@ -92,8 +94,7 @@ public class Organism extends Thing {
     public void update(List<Candy> candies) {
         face.leftEye.locationT = new PVector(location.x, location.y);
         face.rightEye.locationT = new PVector(location.x, location.y);
-        face.bodyAngle = angle;
-        face.update();
+        face.update(angle, getHunger());
         
         float[] outputSignal = percieveAndThink(candies);
         moveBodyParts(outputSignal);
@@ -189,7 +190,7 @@ public class Organism extends Thing {
             }
         }
         
-        inputSignal[2] = hunger;
+        inputSignal[2] = getHunger();
         
         return inputSignal;
     }
@@ -278,8 +279,6 @@ public class Organism extends Thing {
         if (0 < rightWingFlapping) {
             fat -= size * 0.0001;
         }
-        
-        hunger = 1 - fat / size;
         
         if (fat < size / 5) {
             hungry = true;
