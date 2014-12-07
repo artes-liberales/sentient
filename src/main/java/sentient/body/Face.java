@@ -27,13 +27,6 @@ public class Face {
       //rightEye.irisColor = irisColor;
     }
     
-    public PVector getMouthLocation() {
-        PVector mouthLocation = new PVector(mouth.location.x, mouth.location.y);
-        mouthLocation.rotate(bodyAngle);
-        PVector result = PVector.add(location, mouthLocation);
-        return result;
-    }
-    
     public void update(float bodyAngle, float hunger) {
         this.bodyAngle = bodyAngle;
         
