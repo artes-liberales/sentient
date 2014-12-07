@@ -212,15 +212,24 @@ public class Organism extends Thing {
         wingSinR += rightWingFlapping;
     }
     
+    public PVector getMouthLocation() {
+        PVector mouthLocation = new PVector(face.mouth.location.x, face.mouth.location.y);
+        mouthLocation.rotate(angle);
+        PVector result = PVector.add(location, mouthLocation);
+        return result;
+    }
+    
     /**
      * Eat food that is inside body radius.
      */
     private boolean eat() {
+        PVector mouthLocation = getMouthLocation();
+        
         for (int i = 0; i < Sentient.candies.size(); i++) {
             Candy candy = (Candy) Sentient.candies.get(i);
             
-            float distanceToCandy = Sentient.dist(location.x, location.y, candy.location.x, candy.location.y);
-            if (distanceToCandy < radius) {
+            float distanceToCandy = Sentient.dist(mouthLocation.x, mouthLocation.y, candy.location.x, candy.location.y);
+            if (distanceToCandy < MAX_SIZE / 6) {
                 digestFood();
                 Sentient.candies.remove(i);
                 return true;
