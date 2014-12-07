@@ -161,7 +161,7 @@ public class Organism extends Thing {
             
             // Check if food is in field of vision
             float distanceToCandy = Sentient.dist(location.x, location.y, candyX, candyY);
-            if (distanceToCandy < VISION) {
+            if (radius <= distanceToCandy && distanceToCandy < VISION) {
                 PVector foodDirection = new PVector(candyX - location.x, candyY - location.y);
                 
                 // Angles between eye looking directions and food direction
