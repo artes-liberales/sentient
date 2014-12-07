@@ -11,7 +11,6 @@ public class Face {
     public Eye leftEye;
     public Eye rightEye;
     public Mouth mouth;
-    public boolean inMouth;
     public float bodyAngle;
     
     /**
@@ -22,7 +21,7 @@ public class Face {
       location = new PVector(l.x, l.y);
       leftEye = new Eye(irisColor);//make gaussian
       rightEye = new Eye(irisColor);
-      mouth = new Mouth();
+      mouth = new Mouth(size);
       //int irisColor = color(random(120, 250), 40, 100);
       //leftEye.irisColor = irisColor;
       //rightEye.irisColor = irisColor;
@@ -31,6 +30,7 @@ public class Face {
     public void update() {
       if (0.01 > Math.random() && leftEye.gazeLerp >= 1) randomGaze();
       if (0.01 > Math.random() && leftEye.dilationLerp >= 1) randomDilation();
+      mouth.updateProportions(size);
       leftEye.update();
       rightEye.update();
       leftEye.bodyAngle = bodyAngle;

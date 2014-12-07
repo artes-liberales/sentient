@@ -150,13 +150,15 @@ public class Sentient extends PApplet {
         noStroke();
         fill(face.skinColor);
         ellipse(0, 0, face.size, face.size);
+        
         //Mouth
-        strokeWeight(face.size/50);
+        strokeWeight(face.size / 50);
         stroke(0, 100, 100);
         fill(0, 100, 50);
-        //ellipse(size/2.5,0,size/10, size/4);
-        ellipse(face.size/2.5f, 0, face.size/15, face.size/5);
+        ellipse(face.mouth.location.x, face.mouth.location.y,
+                face.mouth.width, face.mouth.height);
         
+        //Eyes
         drawEye(face.leftEye);
         drawEye(face.rightEye);
     }
