@@ -27,17 +27,22 @@ public class AiSeeker implements Brain {
     }
     
     public float[] think(float[] inputSignal) {
-      if (0 == inputSignal[0] && 0 == inputSignal[1]) {
+      if (0 == inputSignal[1] && 0 == inputSignal[1] && 0 == inputSignal[2]) {
         return reptileBrain.think(inputSignal);
       }
       
       float[] outputSignal = new float[2];
       
-      if (1 == inputSignal[0]) {
+      if (1 == inputSignal[1]) {
         outputSignal[1] = 1;
       }
       
-      if (1 == inputSignal[1]) {
+      if (1 == inputSignal[2]) {
+        outputSignal[0] = 1;
+        outputSignal[1] = 1;
+      }
+      
+      if (1 == inputSignal[3]) {
         outputSignal[0] = 1;
       }
       

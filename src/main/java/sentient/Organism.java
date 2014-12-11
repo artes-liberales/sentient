@@ -9,8 +9,8 @@ import sentient.food.Candy;
 
 public class Organism extends Thing {
     public static final float MAX_SIZE = 100;
-    public static final float VISION = 120;
-    public static final float EYE_ANGLE = Sentient.pi / 2;
+    public static final float VISION = 100;
+    public static final float EYE_ANGLE = Sentient.pi / 6;
     
     public String name;
     public float size;
@@ -131,14 +131,16 @@ public class Organism extends Thing {
      */
     private float[] lookForFood(List<Candy> candies) {
         // Signal that is to be sent as input to the brain
-        float[] inputSignal = new float[3];
+        float[] inputSignal = new float[4];
         
         // Angles that the eyes are looking in
-        float leftEyeAngle = angle - EYE_ANGLE;
-        float rightEyeAngle = angle + EYE_ANGLE;
+        float leftEyeAngle = angle - EYE_ANGLE / 2;
+        float middleEyeAngle = angle;
+        float rightEyeAngle = angle + EYE_ANGLE / 2;
         
         // Directions that the eyes are looking in
-        PVector leftEyeLookingDirection = new PVector(VISION * Sentient.getCos(leftEyeAngle), VISION * Sentient.getCos(leftEyeAngle));
+        PVector leftEyeLookingDirection = new PVector(VISION * Sentient.getCos(leftEyeAngle), VISION * Sentient.getSin(leftEyeAngle));
+        PVector middleEyeLookingDirection = new PVector(VISION * Sentient.getCos(middleEyeAngle), VISION * Sentient.getSin(middleEyeAngle));
         PVector rightEyeLookingDirection = new PVector(VISION * Sentient.getCos(rightEyeAngle), VISION * Sentient.getSin(rightEyeAngle));
         
         for (int i = 0; i < candies.size(); i++) {
@@ -167,19 +169,23 @@ public class Organism extends Thing {
                 // Angles between eye looking directions and food direction
                 float leftTheta = (float) Math.acos(leftEyeLookingDirection.dot(foodDirection)
                         / (leftEyeLookingDirection.mag() * foodDirection.mag()));
+                float middleTheta = (float) Math.acos(middleEyeLookingDirection.dot(foodDirection)
+                        / (middleEyeLookingDirection.mag() * foodDirection.mag()));
                 float rightTheta = (float) Math.acos(rightEyeLookingDirection.dot(foodDirection)
                         / (rightEyeLookingDirection.mag() * foodDirection.mag()));
                 
                 // Determine if food is in left or right field of vision
                 if (Math.abs(leftTheta) < EYE_ANGLE) {
-                    inputSignal[0] = 1;
-                } else if (Math.abs(rightTheta) < EYE_ANGLE) {
                     inputSignal[1] = 1;
+                } else if (Math.abs(middleTheta) < EYE_ANGLE) {
+                    inputSignal[2] = 1;
+                } else if (Math.abs(rightTheta) < EYE_ANGLE) {
+                    inputSignal[3] = 1;
                 }
             }
         }
         
-        inputSignal[2] = getHunger();
+        inputSignal[0] = getHunger();
         
         return inputSignal;
     }

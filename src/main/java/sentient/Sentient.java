@@ -8,12 +8,13 @@ import sentient.body.Eye;
 import sentient.body.Face;
 //import processing.core.PFont;
 import sentient.brain.AiNetwork;
+import sentient.brain.AiSeeker;
 import sentient.food.Candy;
 
 public class Sentient extends PApplet {
     private static final long serialVersionUID = 5036190333019003029L;
     
-    public static final int INIT_ORGANISMS = 30;
+    public static final int INIT_ORGANISMS = 1;
     public static final int INIT_CANDIES = 20;
     public static final int MAX_CANDIES = 100;
     public static final float CANDY_REFILL_RATE = 0.03f;
@@ -65,7 +66,7 @@ public class Sentient extends PApplet {
             float wingStrength = random(0.08f, 0.2f);
             int skinColor = color(random(360), Sentient.getMap(wingStrength, 0.08f, 0.2f, 40f, 70f), 95);
             int irisColor = color((int)RandomGenerator.getRandomInterval(120, 250), 40, 100);
-            Organism org = new Organism(new AiNetwork(), wingStrength, skinColor, irisColor);
+            Organism org = new Organism(new AiSeeker(), wingStrength, skinColor, irisColor);
             organisms.add(org);
             // organisms.add(new Organism(new AiRandomFlapping()));
         }
@@ -111,9 +112,9 @@ public class Sentient extends PApplet {
         rotate(organism.angle);
         
         //Vision
-        //fill(255, 0, 100, 50);
-        //ellipse(0, 0, size+VISION, size+VISION);
-        //arc(0, 0, size+VISION, size+VISION, -EYE_ANGLE, EYE_ANGLE, PIE);
+        fill(255, 0, 100, 50);
+        //ellipse(0, 0, organism.size + Organism.VISION, organism.size + Organism.VISION);
+        arc(0, 0, 2 * Organism.VISION, 2 * Organism.VISION, -1.5f * Organism.EYE_ANGLE, 1.5f * Organism.EYE_ANGLE, PIE);
         
         //Wings
         stroke(organism.skinColor);
