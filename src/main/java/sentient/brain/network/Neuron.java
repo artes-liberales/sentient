@@ -64,6 +64,7 @@ public abstract class Neuron {
             return temp;
         }
         
+        sum = 0;
         return 0;
     }
 }

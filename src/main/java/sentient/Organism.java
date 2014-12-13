@@ -178,15 +178,17 @@ public class Organism extends Thing {
                 float rightTheta = (float) Math.acos(rightEyeLookingDirection.dot(foodDirection)
                         / (rightEyeLookingDirection.mag() * foodDirection.mag()));
                 
+                float signalStrength = calculateSignalStrength(distanceToCandy);
+                
                 // Determine if food is in left or right field of vision
                 if (Math.abs(leftTheta) < EYE_ANGLE / 2) {
-                    inputSignal[1] = 1;
+                    inputSignal[1] += signalStrength;
                 } else if (Math.abs(middleLeftTheta) < EYE_ANGLE / 2) {
-                    inputSignal[2] = 1;
+                    inputSignal[2] += signalStrength;
                 } else if (Math.abs(middleRightTheta) < EYE_ANGLE / 2) {
-                    inputSignal[3] = 1;
+                    inputSignal[3] += signalStrength;
                 } else if (Math.abs(rightTheta) < EYE_ANGLE / 2) {
-                    inputSignal[4] = 1;
+                    inputSignal[4] += signalStrength;
                 }
             }
         }
@@ -194,6 +196,10 @@ public class Organism extends Thing {
         inputSignal[0] = getHunger();
         
         return inputSignal;
+    }
+    
+    private float calculateSignalStrength(float distanceToCandy) {
+        return 1 - distanceToCandy / VISION;
     }
     
     /**
