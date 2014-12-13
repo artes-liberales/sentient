@@ -20,7 +20,7 @@ public class Network {
         Neuron input2 = new InputNeuron();
         Neuron input3 = new InputNeuron();
         Neuron input4 = new InputNeuron();
-        Neuron bias = new BiasNeuron(1);
+        Neuron bias = new BiasNeuron(0);
         Neuron output0 = new OutputNeuron();
         Neuron output1 = new OutputNeuron();
         
@@ -116,20 +116,31 @@ public class Network {
         addNeuron(output1);
     }
     
-    // Clone it
+    /**
+     * Clone the network.
+     */
     public Network clone() {
         return new Network(this);
     }
     
+    /**
+     * Add a neuron to the network.
+     */
     public void addNeuron(Neuron n) {
         neurons.add(n);
     }
     
+    /**
+     * Create a connection between two neurons.
+     */
     public void connect(Neuron a, Neuron b) {
         Connection c = new Connection(b, (float) Math.random());
         a.addConnection(c);
     }
     
+    /**
+     * All neurons sends signals through their downstream connections.
+     */
     public float[] fire(float[] inputSignal) {
         neurons.get(0).feedForward(inputSignal[0]);
         neurons.get(1).feedForward(inputSignal[1]);

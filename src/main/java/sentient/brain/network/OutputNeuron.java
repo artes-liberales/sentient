@@ -13,9 +13,10 @@ public class OutputNeuron extends Neuron {
       sum += input;
     }
     
-    //Dont do anything,
-    //just wait for someone to collect value of sum
+    /**
+     * Dont do anything, just wait for someone to collect value of sum.
+     */
     @Override
-    public void fire() {
+    public void fire(float output) {
     }
 }
