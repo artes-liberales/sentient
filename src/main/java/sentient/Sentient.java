@@ -9,6 +9,7 @@ import sentient.body.Face;
 import sentient.brain.AiHomingIn;
 //import processing.core.PFont;
 import sentient.brain.AiNetwork;
+import sentient.brain.AiRandomFlapping;
 import sentient.brain.AiSeeker;
 import sentient.food.Candy;
 
