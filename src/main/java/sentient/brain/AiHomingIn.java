@@ -23,11 +23,19 @@ public class AiHomingIn implements Brain {
     public float[] think(float[] inputSignal) {
       float[] outputSignal = new float[2];
       
-      if (1 == inputSignal[0]) {
+      if (1 == inputSignal[1]) {
         outputSignal[1] = 1;
       }
       
-      if (1 == inputSignal[1]) {
+      if (1 == inputSignal[2]) {
+        outputSignal[1] = 1;
+      }
+      
+      if (1 == inputSignal[3]) {
+        outputSignal[0] = 1;
+      }
+      
+      if (1 == inputSignal[4]) {
         outputSignal[0] = 1;
       }
       

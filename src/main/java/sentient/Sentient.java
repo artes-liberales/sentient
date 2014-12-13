@@ -6,8 +6,10 @@ import java.util.List;
 import processing.core.PApplet;
 import sentient.body.Eye;
 import sentient.body.Face;
+import sentient.brain.AiHomingIn;
 //import processing.core.PFont;
 import sentient.brain.AiNetwork;
+import sentient.brain.AiSeeker;
 import sentient.food.Candy;
 
 public class Sentient extends PApplet {
@@ -111,9 +113,9 @@ public class Sentient extends PApplet {
         rotate(organism.angle);
         
         //Vision
-        //fill(255, 0, 100, 50);
-        //ellipse(0, 0, size+VISION, size+VISION);
-        //arc(0, 0, size+VISION, size+VISION, -EYE_ANGLE, EYE_ANGLE, PIE);
+        fill(255, 0, 100, 50);
+        //ellipse(0, 0, organism.size + Organism.VISION, organism.size + Organism.VISION);
+        arc(0, 0, 2 * Organism.VISION, 2 * Organism.VISION, -2f * Organism.EYE_ANGLE, 2f * Organism.EYE_ANGLE, PIE);
         
         //Wings
         stroke(organism.skinColor);
