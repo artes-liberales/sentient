@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Network {
-    private static final float MUTATION_RATE = 0.01f;
+    private static final float MUTATION_RATE = 0.02f;
     
     private List<Neuron> neurons;
     

@@ -125,8 +125,8 @@ public class Organism extends Thing {
     /**
      * Look for food in front of the organism
      * to create the input signal to the brain.
-     * inputSignal[0] == 1 means that there is food to the left
-     * inputSignal[1] == 1 means that there is food to the right
+     * inputSignal[0] > 0 means that there is food to the left
+     * inputSignal[1] > 0 means that there is food to the right
      * There can be food both to the left and to the right
      */
     private float[] lookForFood(List<Candy> candies) {
@@ -165,7 +165,7 @@ public class Organism extends Thing {
             
             // Check if food is in field of vision
             float distanceToCandy = Sentient.dist(location.x, location.y, candyX, candyY);
-            if (radius <= distanceToCandy && distanceToCandy < VISION) {
+            if (radius <= distanceToCandy && distanceToCandy <= VISION) {
                 PVector foodDirection = new PVector(candyX - location.x, candyY - location.y);
                 
                 // Angles between eye looking directions and food direction
