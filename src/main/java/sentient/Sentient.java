@@ -18,6 +18,7 @@ public class Sentient extends PApplet {
     
     public static final int INIT_ORGANISMS = 30;
     public static final int INIT_CANDIES = 20;
+    public static final int INIT_STONES = 2;
     public static final int MAX_CANDIES = 100;
     public static final float CANDY_REFILL_RATE = 0.03f;
     
@@ -61,6 +62,12 @@ public class Sentient extends PApplet {
         //dataFont = loadFont("LetterGothicMTStd-Bold-10.vlw");
         textAlign(CENTER, CENTER);
         
+        intiOrganisms();
+        initCandies();
+        initStones();
+    }
+    
+    private void intiOrganisms() {
         organisms = new ArrayList<Organism>();
         for (int i = 0; i < INIT_ORGANISMS; i++) {
             float wingStrength = random(0.08f, 0.2f);
@@ -72,18 +79,26 @@ public class Sentient extends PApplet {
         }
         
         // sentient = new Organism(new AiNetwork());
-        
+    }
+    
+    private void initCandies() {
         candies = new ArrayList<Candy>();
         for (int i = 0; i < INIT_CANDIES; i++) {
             int baseColor = color(random(360), 60, 95);
             candies.add(new Candy(baseColor));
         }
-        
-        stones = new ArrayList<Stone>();
-        stones.add(new Stone(color(360, 100, 100)));
     }
     
-    // Main loop
+    private void initStones() {
+        stones = new ArrayList<Stone>();
+        for (int i = 0; i < INIT_STONES; i++) {
+            stones.add(new Stone(color(360, 100, 100)));
+        }
+    }
+    
+    /**
+     * Main loop.
+     */
     public void draw() {
         background(198, 30, 100);
         oncePerFrame = frameCount;
@@ -94,11 +109,13 @@ public class Sentient extends PApplet {
         // drawSentient();
     }
     
-    // Update and draw organisms
+    /**
+     * Update and draw organisms.
+     */
     private void drawOrganisms() {
         for (int i = 0; i < organisms.size(); i++) {
             Organism organism = (Organism) organisms.get(i);
-            organism.update(candies);
+            organism.update(candies, stones);
             drawOraganism(organism);
             
             // Check if it starves to death

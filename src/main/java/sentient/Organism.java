@@ -88,7 +88,7 @@ public class Organism extends Thing {
     /**
      * Encompasses everything the organism does.
      */
-    public void update(List<Candy> candies) {
+    public void update(List<Candy> candies, List<Stone> stones) {
         face.leftEye.locationT = new PVector(location.x, location.y);
         face.rightEye.locationT = new PVector(location.x, location.y);
         face.update(angle, getHunger());
@@ -97,6 +97,7 @@ public class Organism extends Thing {
         float[] outputSignal = brain.think(inputSignal);
         moveBodyParts(outputSignal);
         eat();
+        damageFromStones(stones);
         burnFat();
         super.update();
     }
@@ -279,6 +280,19 @@ public class Organism extends Thing {
         
         if (MAX_SIZE < size) {
             size = MAX_SIZE;
+        }
+    }
+    
+    /**
+     * Calculate damage from stones
+     */
+    private void damageFromStones(List<Stone> stones) {
+        for (Stone stone : stones) {
+            float distanceToStone = Sentient.dist(location.x, location.y, stone.location.x, stone.location.y);
+            
+            if (distanceToStone < radius) {
+                fat -= 0.5;
+            }
         }
     }
     
