@@ -29,6 +29,7 @@ public class Sentient extends PApplet {
     public static List<Organism> organisms;
     // Organism sentient;
     public static List<Candy> candies;
+    public static List<Stone> stones;
     
     //public PFont dataFont;
     
@@ -51,10 +52,7 @@ public class Sentient extends PApplet {
     
     // === VISUAL SETUP ===
     public void setup() {
-        // size(displayWidth, displayHeight, JAVA2D);
-        // size(displayWidth, displayHeight, OPENGL);
         size(MAP_WIDTH, MAP_HEIGHT, JAVA2D);
-        // size(600, 600, OPENGL);
         frameRate(60);
         // smooth();
         colorMode(HSB, 360, 100, 100);
@@ -80,6 +78,9 @@ public class Sentient extends PApplet {
             int baseColor = color(random(360), 60, 95);
             candies.add(new Candy(baseColor));
         }
+        
+        stones = new ArrayList<Stone>();
+        stones.add(new Stone(color(360, 100, 100)));
     }
     
     // Main loop
@@ -88,6 +89,7 @@ public class Sentient extends PApplet {
         oncePerFrame = frameCount;
         drawCandy();
         createCandy();
+        drawStones();
         drawOrganisms();
         // drawSentient();
     }
@@ -107,6 +109,9 @@ public class Sentient extends PApplet {
         }
     }
     
+    /**
+     * Draw an organism.
+     */
     private void drawOraganism(Organism organism) {
         pushMatrix();
         
@@ -141,6 +146,9 @@ public class Sentient extends PApplet {
         popMatrix();
     }
     
+    /**
+     * Draw the face of an organism.
+     */
     private void drawFace(Face face) {
         //Body
         noStroke();
@@ -159,6 +167,9 @@ public class Sentient extends PApplet {
         drawEye(face.rightEye);
     }
     
+    /**
+     * Draw an eye.
+     */
     private void drawEye(Eye eye) {
         int whiteColor = color(0, 0, 100);
         int pupilColor = color(0, 0, 20);
@@ -184,16 +195,9 @@ public class Sentient extends PApplet {
         popMatrix();
     }
     
-    /*public void drawMouth() {
-    //Mouth
-      //strokeWeight(size/50);
-      stroke(0, 100, 100);
-      fill(0, 100, 50);
-      //ellipse(size/2.5,0,size/10, size/4);
-      //ellipse(size/2.5, 0, size/30, size/10);
-    }*/
-    
-    // Draw candy
+    /**
+     * Draw candy.
+     */
     private void drawCandy() {
         for (int i = 0; i < candies.size(); i++) {
             Candy candy = (Candy) candies.get(i);
@@ -218,7 +222,28 @@ public class Sentient extends PApplet {
         }
     }
     
-    // Create random new candy
+    /**
+     * Draw stones.
+     */
+    private void drawStones() {
+        for (int i = 0; i < stones.size(); i++) {
+            Stone stone = stones.get(i);
+            
+            noStroke();
+            fill(stone.baseColor);
+            pushMatrix();
+            
+            translate(stone.location.x, stone.location.y);
+            rotate(stone.angle);
+            triangle(0f, 0f, stone.size, 0f, stone.size / 2, (float)Math.sqrt(3) * stone.size / 2);
+            
+            popMatrix();
+        }
+    }
+    
+    /**
+     * Create random new candy.
+     */
     private void createCandy() {
         if (candies.size() < MAX_CANDIES && random(1) < CANDY_REFILL_RATE) {
             int baseColor = color(random(360), 60, 95);
