@@ -18,7 +18,7 @@ public class Sentient extends PApplet {
     
     public static final int INIT_ORGANISMS = 30;
     public static final int INIT_CANDIES = 20;
-    public static final int INIT_STONES = 2;
+    public static final int INIT_STONES = 3;
     public static final int MAX_CANDIES = 100;
     public static final float CANDY_REFILL_RATE = 0.03f;
     
@@ -243,9 +243,7 @@ public class Sentient extends PApplet {
      * Draw stones.
      */
     private void drawStones() {
-        for (int i = 0; i < stones.size(); i++) {
-            Stone stone = stones.get(i);
-            
+        for (Stone stone : stones) {
             noStroke();
             fill(stone.baseColor);
             pushMatrix();
