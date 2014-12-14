@@ -33,19 +33,19 @@ public class AiSeeker implements Brain {
       
       float[] outputSignal = new float[2];
       
-      if (1 == inputSignal[1]) {
+      if (0.1f < inputSignal[1]) {
         outputSignal[1] = 1;
       }
       
-      if (1 == inputSignal[2]) {
+      if (0.1f < inputSignal[2]) {
         outputSignal[1] = 1;
       }
       
-      if (1 == inputSignal[3]) {
+      if (0.1f < inputSignal[3]) {
         outputSignal[0] = 1;
       }
       
-      if (1 == inputSignal[4]) {
+      if (0.1f < inputSignal[4]) {
         outputSignal[0] = 1;
       }
       

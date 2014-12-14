@@ -125,8 +125,8 @@ public class Organism extends Thing {
     /**
      * Look for food in front of the organism
      * to create the input signal to the brain.
-     * inputSignal[0] == 1 means that there is food to the left
-     * inputSignal[1] == 1 means that there is food to the right
+     * inputSignal[0] > 0 means that there is food to the left
+     * inputSignal[1] > 0 means that there is food to the right
      * There can be food both to the left and to the right
      */
     private float[] lookForFood(List<Candy> candies) {
@@ -165,7 +165,7 @@ public class Organism extends Thing {
             
             // Check if food is in field of vision
             float distanceToCandy = Sentient.dist(location.x, location.y, candyX, candyY);
-            if (radius <= distanceToCandy && distanceToCandy < VISION) {
+            if (radius <= distanceToCandy && distanceToCandy <= VISION) {
                 PVector foodDirection = new PVector(candyX - location.x, candyY - location.y);
                 
                 // Angles between eye looking directions and food direction
@@ -178,15 +178,17 @@ public class Organism extends Thing {
                 float rightTheta = (float) Math.acos(rightEyeLookingDirection.dot(foodDirection)
                         / (rightEyeLookingDirection.mag() * foodDirection.mag()));
                 
+                float signalStrength = calculateSignalStrength(distanceToCandy);
+                
                 // Determine if food is in left or right field of vision
                 if (Math.abs(leftTheta) < EYE_ANGLE / 2) {
-                    inputSignal[1] = 1;
+                    inputSignal[1] += signalStrength;
                 } else if (Math.abs(middleLeftTheta) < EYE_ANGLE / 2) {
-                    inputSignal[2] = 1;
+                    inputSignal[2] += signalStrength;
                 } else if (Math.abs(middleRightTheta) < EYE_ANGLE / 2) {
-                    inputSignal[3] = 1;
+                    inputSignal[3] += signalStrength;
                 } else if (Math.abs(rightTheta) < EYE_ANGLE / 2) {
-                    inputSignal[4] = 1;
+                    inputSignal[4] += signalStrength;
                 }
             }
         }
@@ -194,6 +196,10 @@ public class Organism extends Thing {
         inputSignal[0] = getHunger();
         
         return inputSignal;
+    }
+    
+    private float calculateSignalStrength(float distanceToCandy) {
+        return 1 - distanceToCandy / VISION;
     }
     
     /**

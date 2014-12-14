@@ -5,7 +5,7 @@ import java.util.List;
 
 public abstract class Neuron {
     public List<Connection> connections;
-    public int sum;
+    public float sum;
     
     /**
      * Constructor.
@@ -15,6 +15,9 @@ public abstract class Neuron {
         sum = 0;
     }
     
+    /**
+     * Add a connection to the neuron.
+     */
     public void addConnection(Connection c) {
         connections.add(c);
     }
@@ -23,21 +26,37 @@ public abstract class Neuron {
         sum += input;
         // Activate the neuron and fire the outputs?
         if (1 < sum) {
-            fire();
+            fire(cap(sum));
             // If we’ve fired off our output,
             // we can reset our sum to 0.
             sum = 0;
         }
     }
     
-    // Send the sum out through all connections
-    public void fire() {
+    /**
+     * Send out a signal through all connections.
+     */
+    protected void fire(float output) {
         for (Connection c : connections) {
-            c.feedForward(sum);
+            c.feedForward(output);
         }
     }
     
-    // Get the output
+    /**
+     * Set an upper limit to the signal strength.
+     */
+    private float cap(float input) {
+        if (1 < input) {
+            return 1;
+        }
+        
+        return input;
+    }
+    
+    /**
+     * Get the output.
+     * Mostly used for output neurons.
+     */
     public float collectSum() {
         if (1 < sum) {
             float temp = sum;
@@ -45,6 +64,7 @@ public abstract class Neuron {
             return temp;
         }
         
+        sum = 0;
         return 0;
     }
 }

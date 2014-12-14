@@ -10,6 +10,6 @@ public class BiasNeuron extends Neuron {
     }
     
     public void feedForward(float input) {
-      fire();
+      fire(sum);
     }
 }
