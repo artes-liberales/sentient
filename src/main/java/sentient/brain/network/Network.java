@@ -81,7 +81,7 @@ public class Network {
             for (int j = 0; j < 2; j++) {
                 // Check for mutation
                 if (Math.random() < MUTATION_RATE) {
-                    weights[i][j] = (float) Math.random();
+                    weights[i][j] = (float) (Math.random() * (1 - (-1)) + (-1));
                 } else {
                     weights[i][j] = original.neurons.get(i).connections.get(j).weight;
                 }

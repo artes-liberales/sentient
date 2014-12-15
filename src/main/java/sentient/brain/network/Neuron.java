@@ -48,6 +48,8 @@ public abstract class Neuron {
     private float cap(float input) {
         if (1 < input) {
             return 1;
+        } else if (input < -1) {
+            return -1;
         }
         
         return input;

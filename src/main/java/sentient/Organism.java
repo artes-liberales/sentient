@@ -8,7 +8,7 @@ import sentient.brain.Brain;
 import sentient.food.Candy;
 
 public class Organism extends Thing {
-    public static final float MAX_SIZE = 100;
+    public static final float MAX_SIZE = 80;
     public static final float VISION = 200;
     public static final float EYE_ANGLE = Sentient.pi / 6;
     
