@@ -4,6 +4,7 @@ import sentient.Thing;
 
 public class Candy extends Thing {
     private static float CANDY_SIZE = 20;
+    public static final int NUTRITION = 20;
     public int baseColor;
     
     /**

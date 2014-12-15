@@ -20,6 +20,8 @@ public class Network {
         Neuron input2 = new InputNeuron();
         Neuron input3 = new InputNeuron();
         Neuron input4 = new InputNeuron();
+        Neuron input5 = new InputNeuron();
+        Neuron input6 = new InputNeuron();
         Neuron bias = new BiasNeuron(0);
         Neuron output0 = new OutputNeuron();
         Neuron output1 = new OutputNeuron();
@@ -35,6 +37,10 @@ public class Network {
         connect(input3, output1);
         connect(input4, output0);
         connect(input4, output1);
+        connect(input5, output0);
+        connect(input5, output1);
+        connect(input6, output0);
+        connect(input6, output1);
         connect(bias, output0);
         connect(bias, output1);
         
@@ -44,6 +50,8 @@ public class Network {
         addNeuron(input2);
         addNeuron(input3);
         addNeuron(input4);
+        addNeuron(input5);
+        addNeuron(input6);
         addNeuron(bias);
         addNeuron(output0);
         addNeuron(output1);
@@ -61,17 +69,20 @@ public class Network {
         Neuron input2 = new InputNeuron();
         Neuron input3 = new InputNeuron();
         Neuron input4 = new InputNeuron();
+        Neuron input5 = new InputNeuron();
+        Neuron input6 = new InputNeuron();
         Neuron bias = new BiasNeuron(1);
         Neuron output0 = new OutputNeuron();
         Neuron output1 = new OutputNeuron();
         
         // Get connection weights
-        float weights[][] = new float[6][2];
-        for (int i = 0; i < 6; i++) {
+        float weights[][] = new float[8][2];
+        for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 2; j++) {
                 // Check for mutation
                 if (Math.random() < MUTATION_RATE) {
-                    weights[i][j] = (float) Math.random();
+                    //Mutation can lead to negative weight
+                    weights[i][j] = (float) (Math.random() * (1 - (-1)) + (-1));
                 } else {
                     weights[i][j] = original.neurons.get(i).connections.get(j).weight;
                 }
@@ -101,8 +112,16 @@ public class Network {
         c = new Connection(output1, weights[4][1]);
         input4.addConnection(c);
         c = new Connection(output0, weights[5][0]);
-        bias.addConnection(c);
+        input5.addConnection(c);
         c = new Connection(output1, weights[5][1]);
+        input5.addConnection(c);
+        c = new Connection(output0, weights[6][0]);
+        input6.addConnection(c);
+        c = new Connection(output1, weights[6][1]);
+        input6.addConnection(c);
+        c = new Connection(output0, weights[7][0]);
+        bias.addConnection(c);
+        c = new Connection(output1, weights[7][1]);
         bias.addConnection(c);
         
         // Add the neurons to the network
@@ -111,6 +130,8 @@ public class Network {
         addNeuron(input2);
         addNeuron(input3);
         addNeuron(input4);
+        addNeuron(input5);
+        addNeuron(input6);
         addNeuron(bias);
         addNeuron(output0);
         addNeuron(output1);
@@ -134,6 +155,7 @@ public class Network {
      * Create a connection between two neurons.
      */
     public void connect(Neuron a, Neuron b) {
+        //Connections are created with positive weight
         Connection c = new Connection(b, (float) Math.random());
         a.addConnection(c);
     }
@@ -147,11 +169,13 @@ public class Network {
         neurons.get(2).feedForward(inputSignal[2]);
         neurons.get(3).feedForward(inputSignal[3]);
         neurons.get(4).feedForward(inputSignal[4]);
-        neurons.get(5).feedForward(0);
+        neurons.get(5).feedForward(inputSignal[5]);
+        neurons.get(6).feedForward(inputSignal[6]);
+        neurons.get(7).feedForward(0);
         
         float[] outputSignal = new float[2];
-        outputSignal[0] = neurons.get(6).collectSum();
-        outputSignal[1] = neurons.get(7).collectSum();
+        outputSignal[0] = neurons.get(8).collectSum();
+        outputSignal[1] = neurons.get(9).collectSum();
         return outputSignal;
     }
 }

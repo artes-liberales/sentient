@@ -8,7 +8,7 @@ import sentient.brain.Brain;
 import sentient.food.Candy;
 
 public class Organism extends Thing {
-    public static final float MAX_SIZE = 100;
+    public static final float MAX_SIZE = 80;
     public static final float VISION = 200;
     public static final float EYE_ANGLE = Sentient.pi / 6;
     
@@ -88,15 +88,16 @@ public class Organism extends Thing {
     /**
      * Encompasses everything the organism does.
      */
-    public void update(List<Candy> candies) {
+    public void update(List<Candy> candies, List<Stone> stones) {
         face.leftEye.locationT = new PVector(location.x, location.y);
         face.rightEye.locationT = new PVector(location.x, location.y);
         face.update(angle, getHunger());
         
-        float[] inputSignal = lookForFood(candies);
+        float[] inputSignal = lookForFood(candies, stones);
         float[] outputSignal = brain.think(inputSignal);
         moveBodyParts(outputSignal);
         eat();
+        damageFromStones(stones);
         burnFat();
         super.update();
     }
@@ -129,9 +130,9 @@ public class Organism extends Thing {
      * inputSignal[1] > 0 means that there is food to the right
      * There can be food both to the left and to the right
      */
-    private float[] lookForFood(List<Candy> candies) {
+    private float[] lookForFood(List<Candy> candies, List<Stone> stones) {
         // Signal that is to be sent as input to the brain
-        float[] inputSignal = new float[5];
+        float[] inputSignal = new float[7];
         
         // Angles that the eyes are looking in
         float leftEyeAngle = angle - 1.5f * EYE_ANGLE;
@@ -145,8 +146,7 @@ public class Organism extends Thing {
         PVector middleRightEyeLookingDirection = new PVector(VISION * Sentient.getCos(middleRightEyeAngle), VISION * Sentient.getSin(middleRightEyeAngle));
         PVector rightEyeLookingDirection = new PVector(VISION * Sentient.getCos(rightEyeAngle), VISION * Sentient.getSin(rightEyeAngle));
         
-        for (int i = 0; i < candies.size(); i++) {
-            Candy candy = (Candy) candies.get(i);
+        for (Candy candy : candies) {
             float candyX = candy.location.x;
             float candyY = candy.location.y;
             
@@ -189,6 +189,45 @@ public class Organism extends Thing {
                     inputSignal[3] += signalStrength;
                 } else if (Math.abs(rightTheta) < EYE_ANGLE / 2) {
                     inputSignal[4] += signalStrength;
+                }
+            }
+        }
+        
+        for (Stone stone : stones) {
+            float stoneX = stone.location.x;
+            float stoneY = stone.location.y;
+            
+            // Consider wrapping of screen edges
+            if (Sentient.MAP_WIDTH / 2 < location.x - stoneX) {
+                stoneX += Sentient.MAP_WIDTH;
+            } else if (Sentient.MAP_WIDTH / 2 < stoneX - location.x) {
+                stoneX -= Sentient.MAP_WIDTH;
+            }
+            
+            if (Sentient.MAP_HEIGHT / 2 < location.y - stoneY) {
+                stoneY += Sentient.MAP_HEIGHT;
+            } else if (Sentient.MAP_HEIGHT / 2 < stoneY - location.y) {
+                stoneY -= Sentient.MAP_HEIGHT;
+            }
+            
+            // Check if stone is in field of vision
+            float distanceToStone = Sentient.dist(location.x, location.y, stoneX, stoneY);
+            if (radius <= distanceToStone && distanceToStone <= VISION) {
+                PVector stoneDirection = new PVector(stoneX - location.x, stoneY - location.y);
+                
+                // Angles between eye looking directions and stone direction
+                float leftTheta = (float) Math.acos(middleLeftEyeLookingDirection.dot(stoneDirection)
+                        / (middleLeftEyeLookingDirection.mag() * stoneDirection.mag()));
+                float rightTheta = (float) Math.acos(middleRightEyeLookingDirection.dot(stoneDirection)
+                        / (middleRightEyeLookingDirection.mag() * stoneDirection.mag()));
+                
+                float signalStrength = 1;
+                
+                // Determine if stone is in left or right field of vision
+                if (Math.abs(leftTheta) < EYE_ANGLE / 2) {
+                    inputSignal[5] += signalStrength;
+                } else if (Math.abs(rightTheta) < EYE_ANGLE / 2) {
+                    inputSignal[6] += signalStrength;
                 }
             }
         }
@@ -261,7 +300,7 @@ public class Organism extends Thing {
      * Digest food.
      */
     private void digestFood() {
-        fat += 10;
+        fat += Candy.NUTRITION;
         
         // Grow and divide
         if (size < fat) {
@@ -279,6 +318,19 @@ public class Organism extends Thing {
         
         if (MAX_SIZE < size) {
             size = MAX_SIZE;
+        }
+    }
+    
+    /**
+     * Calculate damage from stones
+     */
+    private void damageFromStones(List<Stone> stones) {
+        for (Stone stone : stones) {
+            float distanceToStone = Sentient.dist(location.x, location.y, stone.location.x, stone.location.y);
+            
+            if (distanceToStone < radius) {
+                fat -= 0.5;
+            }
         }
     }
     
