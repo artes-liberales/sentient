@@ -300,7 +300,7 @@ public class Organism extends Thing {
      * Digest food.
      */
     private void digestFood() {
-        fat += 10;
+        fat += Candy.NUTRITION;
         
         // Grow and divide
         if (size < fat) {

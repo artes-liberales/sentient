@@ -20,7 +20,7 @@ public class Sentient extends PApplet {
     public static final int INIT_CANDIES = 20;
     public static final int INIT_STONES = 3;
     public static final int MAX_CANDIES = 100;
-    public static final float CANDY_REFILL_RATE = 0.03f;
+    public static final float CANDY_REFILL_RATE = 0.015f;
     
     public static final int MAP_WIDTH = 800;
     public static final int MAP_HEIGHT = 800;

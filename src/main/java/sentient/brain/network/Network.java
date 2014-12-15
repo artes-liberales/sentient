@@ -81,6 +81,7 @@ public class Network {
             for (int j = 0; j < 2; j++) {
                 // Check for mutation
                 if (Math.random() < MUTATION_RATE) {
+                    //Mutation can lead to negative weight
                     weights[i][j] = (float) (Math.random() * (1 - (-1)) + (-1));
                 } else {
                     weights[i][j] = original.neurons.get(i).connections.get(j).weight;
@@ -154,6 +155,7 @@ public class Network {
      * Create a connection between two neurons.
      */
     public void connect(Neuron a, Neuron b) {
+        //Connections are created with positive weight
         Connection c = new Connection(b, (float) Math.random());
         a.addConnection(c);
     }
